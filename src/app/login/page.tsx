@@ -58,6 +58,11 @@ export default function LoginPage() {
                 <Input
                   required
                   className="mt-2"
+                  classNames={{
+                    inputWrapper:
+                      "border border-slate-300 bg-white shadow-none transition-colors hover:border-slate-400 data-[focus=true]:border-slate-500",
+                    input: "text-slate-900 placeholder:text-slate-400",
+                  }}
                   placeholder="admin@empresa.com"
                   type="email"
                   value={email}
@@ -70,6 +75,11 @@ export default function LoginPage() {
                 <Input
                   required
                   className="mt-2"
+                  classNames={{
+                    inputWrapper:
+                      "border border-slate-300 bg-white shadow-none transition-colors hover:border-slate-400 data-[focus=true]:border-slate-500",
+                    input: "text-slate-900 placeholder:text-slate-400",
+                  }}
                   placeholder="Tu password"
                   type="password"
                   value={password}
