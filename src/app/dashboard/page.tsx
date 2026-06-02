@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Button, Card, CardBody, Chip } from "@heroui/react";
+import { Button, Card, CardContent, Chip } from "@heroui/react";
 import { ProtectedView } from "@/components/ProtectedView";
 
 export default function DashboardPage() {
@@ -23,8 +23,7 @@ export default function DashboardPage() {
                 </div>
                 <Button
                   className="border border-black/10 bg-white text-black"
-                  radius="full"
-                  variant="flat"
+                  variant="outline"
                   onPress={clearSession}
                 >
                   Cerrar sesion
@@ -38,39 +37,39 @@ export default function DashboardPage() {
 
               <div className="mt-8 grid gap-4 md:grid-cols-3">
                 <Card className="rounded-[26px] border border-black/5 bg-white/85">
-                  <CardBody className="gap-2 p-5">
+                  <CardContent className="gap-2 p-5">
                     <p className="text-xs uppercase tracking-[0.3em] text-black/40">Nombre</p>
                     <p className="text-lg font-semibold">{user?.nombre}</p>
-                  </CardBody>
+                  </CardContent>
                 </Card>
                 <Card className="rounded-[26px] border border-black/5 bg-white/85">
-                  <CardBody className="gap-2 p-5">
+                  <CardContent className="gap-2 p-5">
                     <p className="text-xs uppercase tracking-[0.3em] text-black/40">Email</p>
                     <p className="text-lg font-semibold">{user?.email}</p>
-                  </CardBody>
+                  </CardContent>
                 </Card>
                 <Card className="rounded-[26px] border border-black/5 bg-white/85">
-                  <CardBody className="gap-2 p-5">
+                  <CardContent className="gap-2 p-5">
                     <p className="text-xs uppercase tracking-[0.3em] text-black/40">Rol</p>
                     <div className="flex items-center gap-3">
                       <span className={`status-dot ${user?.role}`} />
                       <p className="text-lg font-semibold capitalize">{user?.role}</p>
                     </div>
-                  </CardBody>
+                  </CardContent>
                 </Card>
               </div>
             </section>
 
             <section className="grid gap-6">
               <Card className="panel rounded-[32px] border border-black/5 bg-white/80">
-                <CardBody className="gap-4 p-8">
-                  <Chip className="bg-[var(--accent-soft)] text-black" radius="full">
+                <CardContent className="gap-4 p-8">
+                  <Chip className="bg-[var(--accent-soft)] text-black" variant="soft">
                     Navegacion
                   </Chip>
                   <h2 className="editorial-title text-4xl">Tus siguientes movimientos</h2>
                   <div className="grid gap-3">
                     <Link href="/login">
-                      <Button className="w-full justify-start bg-black text-white" radius="full">
+                      <Button className="w-full justify-start bg-black text-white">
                         Volver al acceso
                       </Button>
                     </Link>
@@ -78,7 +77,6 @@ export default function DashboardPage() {
                       <Link href="/admin/users">
                         <Button
                           className="w-full justify-start bg-[var(--accent)] text-black"
-                          radius="full"
                         >
                           Abrir administracion de usuarios
                         </Button>
@@ -90,17 +88,17 @@ export default function DashboardPage() {
                       </div>
                     )}
                   </div>
-                </CardBody>
+                </CardContent>
               </Card>
 
               <Card className="rounded-[32px] border border-black/5 bg-[linear-gradient(135deg,#111827,#1f2937)] text-white">
-                <CardBody className="gap-4 p-8">
+                <CardContent className="gap-4 p-8">
                   <p className="text-xs uppercase tracking-[0.35em] text-white/60">Arquitectura</p>
                   <p className="text-lg leading-8 text-white/80">
                     Servicios separados, rutas API, MongoDB con Mongoose, login persistido en
                     localStorage y componentes Hero UI usados sin caer en la estetica clasica.
                   </p>
-                </CardBody>
+                </CardContent>
               </Card>
             </section>
           </div>

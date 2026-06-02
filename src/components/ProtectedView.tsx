@@ -14,7 +14,10 @@ export function ProtectedView({ children, requiresAdmin = false }: ProtectedView
   if (!session.isReady) {
     return (
       <div className="flex min-h-screen items-center justify-center">
-        <Spinner color="warning" label="Cargando sesion..." />
+        <div className="flex flex-col items-center gap-3">
+          <Spinner />
+          <p className="text-sm text-black/60">Cargando sesion...</p>
+        </div>
       </div>
     );
   }

@@ -1,6 +1,6 @@
 "use client";
 
-import { Button, Card, CardBody, Chip } from "@heroui/react";
+import { Button, Card, CardContent, Chip } from "@heroui/react";
 import type { User } from "@/types/user";
 
 type UserCardProps = {
@@ -18,7 +18,7 @@ export function UserCard({ user, onEdit, onDelete }: UserCardProps) {
         isAdmin ? "bg-blue-50" : "bg-zinc-100"
       } shadow-cut rounded-[28px]`}
     >
-      <CardBody className="gap-6 p-6">
+      <CardContent className="gap-6 p-6">
         <div className="flex items-start justify-between gap-4">
           <div>
             <p className="text-xs uppercase tracking-[0.28em] text-black/45">Registro activo</p>
@@ -30,9 +30,8 @@ export function UserCard({ user, onEdit, onDelete }: UserCardProps) {
                 ? "bg-blue-600 text-white"
                 : "bg-zinc-700 text-white"
             }`}
-            radius="full"
             size="sm"
-            variant="solid"
+            variant="primary"
           >
             {user.role}
           </Chip>
@@ -50,7 +49,6 @@ export function UserCard({ user, onEdit, onDelete }: UserCardProps) {
         <div className="flex gap-3">
           <Button
             className="bg-black text-white"
-            radius="full"
             size="sm"
             onPress={() => onEdit(user)}
           >
@@ -58,15 +56,14 @@ export function UserCard({ user, onEdit, onDelete }: UserCardProps) {
           </Button>
           <Button
             className="border border-black/10 bg-white text-black"
-            radius="full"
             size="sm"
-            variant="flat"
+            variant="outline"
             onPress={() => onDelete(user)}
           >
             Eliminar
           </Button>
         </div>
-      </CardBody>
+      </CardContent>
     </Card>
   );
 }

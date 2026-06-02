@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Button, Card, CardBody, Chip, Spinner } from "@heroui/react";
+import { Button, Card, CardContent, Chip, Spinner } from "@heroui/react";
 import { ProtectedView } from "@/components/ProtectedView";
 import { UserCard } from "@/components/UserCard";
 import { UserForm } from "@/components/UserForm";
@@ -77,7 +77,7 @@ function AdminUsersContent({
               <p className="text-xs uppercase tracking-[0.35em] text-black/45">Admin control</p>
               <h1 className="editorial-title mt-3 text-5xl">Cabina de usuarios</h1>
             </div>
-            <Button className="bg-black text-white" radius="full" onPress={onLogout}>
+            <Button className="bg-black text-white" onPress={onLogout}>
               Cerrar sesion
             </Button>
           </div>
@@ -88,7 +88,7 @@ function AdminUsersContent({
           </p>
 
           <Card className="mt-8 rounded-[28px] border border-black/5 bg-white/82">
-            <CardBody className="gap-6 p-7">
+            <CardContent className="gap-6 p-7">
               <div className="flex items-center justify-between gap-4">
                 <div>
                   <p className="text-xs uppercase tracking-[0.3em] text-black/40">Formulario</p>
@@ -97,11 +97,11 @@ function AdminUsersContent({
                   </h2>
                 </div>
                 {editingUser ? (
-                  <Chip className="bg-blue-100 text-blue-800" radius="full">
+                  <Chip className="bg-blue-100 text-blue-800" variant="soft">
                     Editando
                   </Chip>
                 ) : (
-                  <Chip className="bg-zinc-100 text-zinc-800" radius="full">
+                  <Chip className="bg-zinc-100 text-zinc-800" variant="soft">
                     Nuevo
                   </Chip>
                 )}
@@ -127,26 +127,29 @@ function AdminUsersContent({
                   del CRUD para mantener la vista enfocada en la experiencia.
                 </p>
               </div>
-            </CardBody>
+            </CardContent>
           </Card>
         </section>
 
         <section className="grid gap-6">
           <Card className="panel rounded-[32px] border border-black/5 bg-white/80">
-            <CardBody className="gap-5 p-7">
+            <CardContent className="gap-5 p-7">
               <div className="flex flex-wrap items-center justify-between gap-4">
                 <div>
                   <p className="text-xs uppercase tracking-[0.3em] text-black/40">Listado</p>
                   <h2 className="editorial-title mt-2 text-4xl">Usuarios registrados</h2>
                 </div>
-                <Chip className="bg-black text-white" radius="full">
+                <Chip className="bg-black text-white" variant="primary">
                   {users.length} perfiles
                 </Chip>
               </div>
 
               {loading ? (
                 <div className="flex min-h-40 items-center justify-center">
-                  <Spinner color="warning" label="Cargando usuarios..." />
+                  <div className="flex flex-col items-center gap-3">
+                    <Spinner />
+                    <p className="text-sm text-black/60">Cargando usuarios...</p>
+                  </div>
                 </div>
               ) : null}
 
@@ -174,7 +177,7 @@ function AdminUsersContent({
                   ))}
                 </div>
               ) : null}
-            </CardBody>
+            </CardContent>
           </Card>
         </section>
       </div>

@@ -2,7 +2,7 @@
 
 import { FormEvent, useState } from "react";
 import Link from "next/link";
-import { Button, Card, CardBody, Chip, Input } from "@heroui/react";
+import { Button, Card, CardContent, Chip } from "@heroui/react";
 import { login } from "@/services/authService";
 import { useAuthSession } from "@/hooks/useAuthSession";
 import { useRouter } from "next/navigation";
@@ -42,10 +42,10 @@ export default function LoginPage() {
       <div className="frame grid min-h-[calc(100vh-48px)] gap-6 lg:grid-cols-[1.15fr_0.85fr]">
         <section className="panel shadow-cut flex flex-col justify-between gap-10 overflow-hidden p-8 lg:p-12">
           <div className="flex flex-wrap items-center gap-3">
-            <Chip className="bg-black text-white" radius="full" variant="solid">
+            <Chip className="bg-black text-white" variant="primary">
               User Manager
             </Chip>
-            <Chip className="bg-[var(--accent-soft)] text-black" radius="full" variant="flat">
+            <Chip className="bg-[var(--accent-soft)] text-black" variant="soft">
               Login protegido
             </Chip>
           </div>
@@ -65,55 +65,57 @@ export default function LoginPage() {
 
           <div className="grid gap-4 md:grid-cols-3">
             <Card className="rounded-[24px] border border-black/5 bg-white/80">
-              <CardBody className="gap-2 p-5">
+              <CardContent className="gap-2 p-5">
                 <p className="text-xs uppercase tracking-[0.3em] text-black/40">Ruta</p>
                 <p className="text-lg font-semibold">/dashboard</p>
-              </CardBody>
+              </CardContent>
             </Card>
             <Card className="rounded-[24px] border border-black/5 bg-white/80">
-              <CardBody className="gap-2 p-5">
+              <CardContent className="gap-2 p-5">
                 <p className="text-xs uppercase tracking-[0.3em] text-black/40">Stack</p>
                 <p className="text-lg font-semibold">Next + Hero UI</p>
-              </CardBody>
+              </CardContent>
             </Card>
             <Card className="rounded-[24px] border border-black/5 bg-white/80">
-              <CardBody className="gap-2 p-5">
+              <CardContent className="gap-2 p-5">
                 <p className="text-xs uppercase tracking-[0.3em] text-black/40">Control</p>
                 <p className="text-lg font-semibold">Sesion local</p>
-              </CardBody>
+              </CardContent>
             </Card>
           </div>
         </section>
 
         <section className="panel flex items-center p-4 md:p-6">
           <Card className="w-full rounded-[28px] border border-black/5 bg-white/88">
-            <CardBody className="gap-6 p-7">
+            <CardContent className="gap-6 p-7">
               <div>
                 <p className="text-xs uppercase tracking-[0.35em] text-black/45">Acceso</p>
                 <h2 className="editorial-title mt-3 text-4xl">Iniciar sesion</h2>
               </div>
 
               <form className="grid gap-5" onSubmit={handleSubmit}>
-                <Input
-                  isRequired
-                  label="Email"
-                  labelPlacement="outside"
-                  placeholder="admin@empresa.com"
-                  type="email"
-                  value={email}
-                  variant="bordered"
-                  onValueChange={setEmail}
-                />
-                <Input
-                  isRequired
-                  label="Password"
-                  labelPlacement="outside"
-                  placeholder="Tu password"
-                  type="password"
-                  value={password}
-                  variant="bordered"
-                  onValueChange={setPassword}
-                />
+                <label className="grid gap-2">
+                  <span className="text-sm font-medium text-black/80">Email</span>
+                  <input
+                    required
+                    className="w-full rounded-2xl border border-black/10 bg-white px-4 py-3 outline-none transition focus:border-black/30"
+                    placeholder="admin@empresa.com"
+                    type="email"
+                    value={email}
+                    onChange={(event) => setEmail(event.target.value)}
+                  />
+                </label>
+                <label className="grid gap-2">
+                  <span className="text-sm font-medium text-black/80">Password</span>
+                  <input
+                    required
+                    className="w-full rounded-2xl border border-black/10 bg-white px-4 py-3 outline-none transition focus:border-black/30"
+                    placeholder="Tu password"
+                    type="password"
+                    value={password}
+                    onChange={(event) => setPassword(event.target.value)}
+                  />
+                </label>
 
                 {error ? (
                   <div className="rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
@@ -123,11 +125,10 @@ export default function LoginPage() {
 
                 <Button
                   className="h-14 bg-black text-base text-white"
-                  isLoading={loading}
-                  radius="full"
+                  isDisabled={loading}
                   type="submit"
                 >
-                  Entrar al dashboard
+                  {loading ? "Entrando..." : "Entrar al dashboard"}
                 </Button>
               </form>
 
@@ -141,7 +142,7 @@ export default function LoginPage() {
                   Ir directo si ya tienes sesion
                 </Link>
               </div>
-            </CardBody>
+            </CardContent>
           </Card>
         </section>
       </div>
