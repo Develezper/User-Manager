@@ -15,13 +15,13 @@ type UserCardProps = {
 
 const roleClasses: Record<Role, { card: string; avatar: string; chip: string }> = {
   admin: {
-    card: "border border-indigo-100/80 bg-[linear-gradient(135deg,rgba(255,255,255,0.98),rgba(238,242,255,0.94))]",
-    avatar: "bg-indigo-600 text-white shadow-[0_10px_26px_rgba(79,70,229,0.22)]",
-    chip: "border border-indigo-100 bg-indigo-50 text-indigo-700",
+    card: "border border-indigo-200/90 bg-[linear-gradient(135deg,rgba(255,255,255,0.98),rgba(224,231,255,0.98),rgba(238,242,255,0.96))]",
+    avatar: "h-14 w-16 rounded-[20px] border border-indigo-200/70 bg-[linear-gradient(135deg,#3730a3,#4f46e5)] text-white shadow-[0_12px_28px_rgba(79,70,229,0.26)]",
+    chip: "border border-indigo-200 bg-indigo-50 text-indigo-700",
   },
   user: {
-    card: "border border-slate-200/80 bg-[linear-gradient(135deg,rgba(255,255,255,0.98),rgba(248,250,252,0.94))]",
-    avatar: "bg-slate-700 text-white shadow-[0_10px_26px_rgba(51,65,85,0.18)]",
+    card: "border border-slate-200/90 bg-[linear-gradient(135deg,rgba(255,255,255,0.98),rgba(248,250,252,0.98),rgba(241,245,249,0.96))]",
+    avatar: "h-14 w-16 rounded-[20px] border border-slate-200/80 bg-[linear-gradient(135deg,#334155,#64748b)] text-white shadow-[0_12px_28px_rgba(51,65,85,0.18)]",
     chip: "border border-slate-200 bg-white text-slate-700",
   },
 };
