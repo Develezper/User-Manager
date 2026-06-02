@@ -226,9 +226,9 @@ function AdminUsersContent({
       </main>
 
       <Modal state={formModal}>
-        <Modal.Backdrop className="bg-slate-900/30 backdrop-blur-sm" isDismissable={false} />
-        <Modal.Container className="px-4" placement="center" size="lg">
-          <Modal.Dialog className="rounded-[28px] border border-slate-200 bg-white shadow-[0_24px_80px_rgba(15,23,42,0.12)]">
+        <Modal.Backdrop className="fixed inset-0 bg-slate-900/30 backdrop-blur-sm" isDismissable={false} />
+        <Modal.Container className="fixed inset-0 flex items-center justify-center px-4" placement="center" size="lg">
+          <Modal.Dialog className="relative w-full max-w-lg rounded-[28px] border border-slate-200 bg-white shadow-[0_24px_80px_rgba(15,23,42,0.12)]">
             <Modal.Header className="flex items-start justify-between gap-4 border-b border-slate-100 px-6 py-5">
               <div>
                 <Modal.Heading className="text-xl font-semibold text-slate-900">
@@ -259,9 +259,9 @@ function AdminUsersContent({
       </Modal>
 
       <Modal state={deleteModal}>
-        <Modal.Backdrop className="bg-slate-900/30 backdrop-blur-sm" isDismissable={false} />
-        <Modal.Container className="px-4" placement="center" size="md">
-          <Modal.Dialog className="rounded-[28px] border border-slate-200 bg-white shadow-[0_24px_80px_rgba(15,23,42,0.12)]">
+        <Modal.Backdrop className="fixed inset-0 bg-slate-900/30 backdrop-blur-sm" isDismissable={false} />
+        <Modal.Container className="fixed inset-0 flex items-center justify-center px-4" placement="center" size="md">
+          <Modal.Dialog className="relative w-full max-w-md rounded-[28px] border border-slate-200 bg-white shadow-[0_24px_80px_rgba(15,23,42,0.12)]">
             <Modal.Header className="border-b border-slate-100 px-6 py-5">
               <Modal.Heading className="text-xl font-semibold text-slate-900">
                 Eliminar usuario
