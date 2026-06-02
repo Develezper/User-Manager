@@ -1,13 +1,13 @@
 "use client";
 
-import { FormEvent, useEffect, useState } from "react";
+import { Suspense, FormEvent, useEffect, useState } from "react";
 import Link from "next/link";
 import { Button, Card, Input, Label, TextField } from "@heroui/react";
 import { login } from "@/services/authService";
 import { useAuthSession } from "@/hooks/useAuthSession";
 import { useRouter, useSearchParams } from "next/navigation";
 
-export default function LoginPage() {
+function LoginForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { saveSession, isAuthenticated, isReady, user } = useAuthSession();
@@ -98,7 +98,11 @@ export default function LoginPage() {
               {error ? <div className="message-error">{error}</div> : null}
               {message ? <div className="message-muted">{message}</div> : null}
 
-              <Button className="mt-2 h-14 rounded-2xl border border-slate-900 bg-slate-900 text-base text-white transition-all hover:border-slate-800 hover:bg-slate-800" isDisabled={loading} type="submit">
+              <Button
+                className="mt-2 h-14 rounded-2xl border border-slate-900 bg-slate-900 text-base text-white transition-all hover:border-slate-800 hover:bg-slate-800"
+                isDisabled={loading}
+                type="submit"
+              >
                 {loading ? "Iniciando..." : "Iniciar sesion"}
               </Button>
             </form>
@@ -120,5 +124,25 @@ export default function LoginPage() {
         </Card>
       </div>
     </main>
+  );
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense
+      fallback={
+        <main className="app-shell flex items-center justify-center overflow-hidden">
+          <div className="app-frame flex w-full justify-center">
+            <Card className="w-full max-w-md border border-slate-300/80 bg-white/92 shadow-[0_24px_80px_rgba(15,23,42,0.08)] backdrop-blur">
+              <Card.Content className="px-6 py-10 text-center text-sm text-slate-500 sm:px-8">
+                Cargando login...
+              </Card.Content>
+            </Card>
+          </div>
+        </main>
+      }
+    >
+      <LoginForm />
+    </Suspense>
   );
 }
