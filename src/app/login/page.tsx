@@ -41,7 +41,7 @@ export default function LoginPage() {
       <div className="app-frame flex w-full justify-center">
         <Card className="w-full max-w-md border border-slate-200/80 bg-white/90 shadow-[0_24px_80px_rgba(15,23,42,0.08)] backdrop-blur">
           <Card.Header className="flex flex-col items-center gap-2 px-6 pt-8 text-center sm:px-8">
-            <div className="space-y-2">
+            <div className="space-y-4">
               <Card.Title className="text-3xl font-semibold tracking-[-0.03em] text-slate-900 sm:text-4xl">
                 User Manager
               </Card.Title>

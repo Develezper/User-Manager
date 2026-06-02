@@ -2,23 +2,16 @@ import bcrypt from "bcryptjs";
 import { NextResponse } from "next/server";
 import { connectToDatabase } from "@/lib/mongodb";
 import { sendWelcomeEmail } from "@/lib/mailer";
+import { getValidationMessage, registerSchema } from "@/lib/validators/user";
 import { User } from "@/models/User";
+import { ZodError } from "zod";
 
 export async function POST(request: Request) {
   try {
-    const { nombre, cc, email, password } = await request.json();
-
-    if (!nombre || !cc || !email || !password) {
-      return NextResponse.json(
-        { message: "Nombre, cedula, email y password son obligatorios." },
-        { status: 400 }
-      );
-    }
+    const { nombre, cc, email, password } = registerSchema.parse(await request.json());
 
     await connectToDatabase();
-
-    const normalizedEmail = email.toLowerCase();
-    const existing = await User.findOne({ email: normalizedEmail });
+    const existing = await User.findOne({ email });
 
     if (existing) {
       return NextResponse.json(
@@ -31,14 +24,14 @@ export async function POST(request: Request) {
     const created = await User.create({
       nombre,
       cc,
-      email: normalizedEmail,
+      email,
       password: hashedPassword,
       role: "user"
     });
 
     await sendWelcomeEmail({
       nombre,
-      email: normalizedEmail,
+      email,
       password,
       role: "user"
     });
@@ -55,6 +48,10 @@ export async function POST(request: Request) {
       { status: 201 }
     );
   } catch (error) {
+    if (error instanceof ZodError) {
+      return NextResponse.json({ message: getValidationMessage(error) }, { status: 400 });
+    }
+
     return NextResponse.json(
       {
         message: "No fue posible crear la cuenta.",

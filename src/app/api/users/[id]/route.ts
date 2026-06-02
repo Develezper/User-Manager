@@ -1,7 +1,9 @@
 import bcrypt from "bcryptjs";
 import { NextResponse } from "next/server";
 import { connectToDatabase } from "@/lib/mongodb";
+import { getValidationMessage, updateUserSchema } from "@/lib/validators/user";
 import { User } from "@/models/User";
+import { ZodError } from "zod";
 
 type Params = {
   params: Promise<{
@@ -12,19 +14,12 @@ type Params = {
 export async function PUT(request: Request, { params }: Params) {
   try {
     const { id } = await params;
-    const { nombre, cc, email, password, role } = await request.json();
-
-    if (!nombre || !cc || !email || !role) {
-      return NextResponse.json(
-        { message: "Nombre, cedula, email y rol son obligatorios." },
-        { status: 400 }
-      );
-    }
+    const { nombre, cc, email, password, role } = updateUserSchema.parse(await request.json());
 
     await connectToDatabase();
 
     const existing = await User.findOne({
-      email: email.toLowerCase(),
+      email,
       _id: { $ne: id }
     });
 
@@ -38,7 +33,7 @@ export async function PUT(request: Request, { params }: Params) {
     const updates: Record<string, string> = {
       nombre,
       cc,
-      email: email.toLowerCase(),
+      email,
       role
     };
 
@@ -66,6 +61,10 @@ export async function PUT(request: Request, { params }: Params) {
       }
     });
   } catch (error) {
+    if (error instanceof ZodError) {
+      return NextResponse.json({ message: getValidationMessage(error) }, { status: 400 });
+    }
+
     return NextResponse.json(
       {
         message: "No fue posible actualizar el usuario.",

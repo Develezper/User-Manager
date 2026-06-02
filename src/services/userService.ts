@@ -1,4 +1,6 @@
 import { User, UserFormPayload } from "@/types/user";
+import { createUserSchema, getValidationMessage, updateUserSchema } from "@/lib/validators/user";
+import { ZodError } from "zod";
 
 export async function getUsers(): Promise<User[]> {
   const response = await fetch("/api/users", { cache: "no-store" });
@@ -12,12 +14,24 @@ export async function getUsers(): Promise<User[]> {
 }
 
 export async function createUser(payload: UserFormPayload): Promise<User> {
+  let validatedPayload: ReturnType<typeof createUserSchema.parse>;
+
+  try {
+    validatedPayload = createUserSchema.parse(payload);
+  } catch (error) {
+    if (error instanceof ZodError) {
+      throw new Error(getValidationMessage(error));
+    }
+
+    throw error;
+  }
+
   const response = await fetch("/api/users", {
     method: "POST",
     headers: {
       "Content-Type": "application/json"
     },
-    body: JSON.stringify(payload)
+    body: JSON.stringify(validatedPayload)
   });
 
   const data = await response.json();
@@ -30,12 +44,24 @@ export async function createUser(payload: UserFormPayload): Promise<User> {
 }
 
 export async function updateUser(id: string, payload: UserFormPayload): Promise<User> {
+  let validatedPayload: ReturnType<typeof updateUserSchema.parse>;
+
+  try {
+    validatedPayload = updateUserSchema.parse(payload);
+  } catch (error) {
+    if (error instanceof ZodError) {
+      throw new Error(getValidationMessage(error));
+    }
+
+    throw error;
+  }
+
   const response = await fetch(`/api/users/${id}`, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json"
     },
-    body: JSON.stringify(payload)
+    body: JSON.stringify(validatedPayload)
   });
 
   const data = await response.json();

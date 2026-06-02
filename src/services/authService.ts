@@ -1,6 +1,18 @@
 import { LoginPayload, RegisterPayload, SessionUser } from "@/types/user";
+import { getValidationMessage, loginSchema, registerSchema } from "@/lib/validators/user";
+import { ZodError } from "zod";
 
 export async function login(payload: LoginPayload): Promise<SessionUser> {
+  try {
+    payload = loginSchema.parse(payload);
+  } catch (error) {
+    if (error instanceof ZodError) {
+      throw new Error(getValidationMessage(error));
+    }
+
+    throw error;
+  }
+
   const response = await fetch("/api/auth/login", {
     method: "POST",
     headers: {
@@ -19,6 +31,16 @@ export async function login(payload: LoginPayload): Promise<SessionUser> {
 }
 
 export async function register(payload: RegisterPayload): Promise<SessionUser> {
+  try {
+    payload = registerSchema.parse(payload);
+  } catch (error) {
+    if (error instanceof ZodError) {
+      throw new Error(getValidationMessage(error));
+    }
+
+    throw error;
+  }
+
   const response = await fetch("/api/auth/register", {
     method: "POST",
     headers: {
