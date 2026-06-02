@@ -1,6 +1,5 @@
 import bcrypt from "bcryptjs";
 import { NextResponse } from "next/server";
-import { requireAdminSession } from "@/lib/apiAuth";
 import { connectToDatabase } from "@/lib/mongodb";
 import { sendWelcomeEmail } from "@/lib/mailer";
 import { getValidationMessage, registerSchema } from "@/lib/validators/user";
@@ -9,12 +8,6 @@ import { ZodError } from "zod";
 
 export async function POST(request: Request) {
   try {
-    const authError = requireAdminSession(request);
-
-    if (authError) {
-      return authError;
-    }
-
     const { nombre, cc, email, password } = registerSchema.parse(await request.json());
 
     await connectToDatabase();

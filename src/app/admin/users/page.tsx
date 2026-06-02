@@ -5,7 +5,6 @@ import {
   Avatar,
   Button,
   Card,
-  Chip,
   Header,
   Spinner
 } from "@heroui/react";
@@ -112,12 +111,14 @@ function AdminUsersContent({
     <>
       <main className="app-shell">
         <div className="app-frame space-y-6">
-          <Card className="surface-card shadow-none">
+          <Card className="surface-card rounded-[20px] shadow-none">
             <Card.Content className="p-3 sm:p-4">
               <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                 <div className="flex items-center gap-3">
-                  <Avatar className="h-11 w-11 bg-slate-900 text-white shadow-[0_10px_24px_rgba(15,23,42,0.12)]">
-                    <Avatar.Fallback>{getInitials(userName)}</Avatar.Fallback>
+                  <Avatar className="flex h-11 w-11 items-center justify-center overflow-hidden rounded-[14px] bg-slate-900 text-white shadow-[0_10px_24px_rgba(15,23,42,0.12)]">
+                    <Avatar.Fallback className="flex h-full w-full items-center justify-center text-sm font-semibold leading-none">
+                      {getInitials(userName)}
+                    </Avatar.Fallback>
                   </Avatar>
                   <Header className="flex flex-col">
                     <span className="text-sm font-semibold text-slate-900">User Manager</span>
@@ -126,14 +127,14 @@ function AdminUsersContent({
                 </div>
 
                 <div className="flex flex-wrap items-center gap-3">
-                  <Chip className="rounded-full border border-slate-200 bg-white/90 px-3 text-slate-700" size="sm" variant="soft">
+                  <span className="text-sm font-medium text-slate-600">
                     Acceso administrador
-                  </Chip>
-                  <Button className="rounded-full bg-slate-900 px-5 text-white" onPress={handleCreate}>
+                  </span>
+                  <Button className="rounded-md bg-slate-900 px-5 text-white" onPress={handleCreate}>
                     Nuevo usuario
                   </Button>
                   <Button
-                    className="rounded-full border border-slate-200 bg-white/90 text-slate-800"
+                    className="rounded-md border border-slate-200 bg-white/90 text-slate-800"
                     variant="outline"
                     onPress={onLogout}
                   >
@@ -147,7 +148,7 @@ function AdminUsersContent({
           <div className="grid gap-4 md:grid-cols-3">
             <SummaryCard label="Administrador" value={userName} />
             <SummaryCard label="Usuarios" value={String(users.length)} />
-            <Card className="surface-card shadow-none">
+            <Card className="surface-card rounded-[18px] shadow-none">
               <Card.Content className="gap-2 p-5">
                 <p className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-500">
                   Estado
@@ -159,7 +160,7 @@ function AdminUsersContent({
             </Card>
           </div>
 
-          <Card className="surface-card shadow-none">
+          <Card className="surface-card rounded-[22px] shadow-none">
             <Card.Header className="flex flex-col gap-3 p-6 sm:flex-row sm:items-center sm:justify-between sm:p-8">
               <div>
                 <p className="eyebrow">Usuarios</p>
@@ -170,9 +171,9 @@ function AdminUsersContent({
                   Crea, edita y elimina usuarios desde un solo panel.
                 </Card.Description>
               </div>
-              <Chip className="rounded-full border border-slate-200 bg-white/90 text-slate-700" size="sm" variant="soft">
+              <span className="text-sm font-medium text-slate-600">
                 {users.length} registros
-              </Chip>
+              </span>
             </Card.Header>
 
             <Card.Content className="grid gap-5 p-6 pt-0 sm:p-8 sm:pt-0">
@@ -220,8 +221,8 @@ function AdminUsersContent({
 
       {isFormOpen ? (
         <DialogShell>
-          <div className="relative w-full max-w-lg rounded-[32px] border border-white/70 bg-[rgba(255,255,255,0.96)] shadow-[0_28px_90px_rgba(15,23,42,0.18)]">
-            <div className="flex items-start justify-between gap-4 border-b border-slate-100 px-6 py-5">
+          <div className="relative mx-auto w-full max-w-lg rounded-[20px] border border-slate-200 bg-white shadow-[0_28px_90px_rgba(15,23,42,0.14)]">
+            <div className="flex items-start justify-between gap-4 border-b border-slate-200 px-6 py-5">
               <div>
                 <h2 className="text-xl font-semibold text-slate-900">
                   {editingUser ? "Editar usuario" : "Nuevo usuario"}
@@ -230,13 +231,9 @@ function AdminUsersContent({
                   Completa la informacion del usuario.
                 </p>
               </div>
-              <Chip
-                className={editingUser ? "rounded-full border border-blue-100 bg-blue-50 text-blue-700" : "rounded-full border border-slate-200 bg-white text-slate-700"}
-                size="sm"
-                variant="soft"
-              >
+              <span className={`text-sm font-medium ${editingUser ? "text-blue-700" : "text-slate-600"}`}>
                 {editingUser ? "Edicion" : "Crear"}
-              </Chip>
+              </span>
             </div>
             <div className="px-6 py-6">
               <UserForm
@@ -252,8 +249,8 @@ function AdminUsersContent({
 
       {isDeleteOpen ? (
         <DialogShell>
-          <div className="relative w-full max-w-md rounded-[32px] border border-white/70 bg-[rgba(255,255,255,0.96)] shadow-[0_28px_90px_rgba(15,23,42,0.18)]">
-            <div className="border-b border-slate-100 px-6 py-5">
+          <div className="relative mx-auto w-full max-w-md rounded-[20px] border border-slate-200 bg-white shadow-[0_28px_90px_rgba(15,23,42,0.14)]">
+            <div className="border-b border-slate-200 px-6 py-5">
               <h2 className="text-xl font-semibold text-slate-900">
                 Eliminar usuario
               </h2>
@@ -265,9 +262,9 @@ function AdminUsersContent({
                   : "Confirma esta accion para continuar."}
               </p>
             </div>
-            <div className="flex justify-end gap-3 border-t border-slate-100 px-6 py-5">
+            <div className="flex justify-end gap-3 border-t border-slate-200 px-6 py-5">
               <Button
-                className="rounded-full border border-slate-200 bg-white text-slate-800"
+                className="rounded-md border border-slate-300 bg-white text-slate-800 transition-all hover:border-slate-400 hover:bg-slate-50"
                 variant="outline"
                 onPress={() => {
                   setUserToDelete(null);
@@ -276,7 +273,7 @@ function AdminUsersContent({
               >
                 Cancelar
               </Button>
-              <Button className="rounded-full bg-slate-900 px-5 text-white" isDisabled={busy} onPress={handleConfirmDelete}>
+              <Button className="rounded-md bg-slate-900 px-5 text-white transition-all hover:bg-slate-800" isDisabled={busy} onPress={handleConfirmDelete}>
                 {busy ? "Eliminando..." : "Eliminar"}
               </Button>
             </div>

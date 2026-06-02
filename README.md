@@ -30,6 +30,7 @@ Production site: https://user-manager-opal.vercel.app/login
 ## Main Routes
 
 - `/login`: access for registered users
+- `/register`: public form for new users to create a normal account
 - `/dashboard`: protected view for authenticated users
 - `/admin/users`: protected management panel for accounts with the `admin` role
 
@@ -83,6 +84,7 @@ In `production`, the endpoint does not expose the cluster `host` or detailed err
 
 ## Features
 
+- Public registration creates users with the default `user` role
 - Login validated against MongoDB
 - Session persistence in `localStorage`
 - Protected dashboard

@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Button, Input, Label, ListBox, Select, TextField } from "@heroui/react";
+import { Button, Input, Label, TextField } from "@heroui/react";
 import type { Role, User, UserFormPayload } from "@/types/user";
 
 const initialState: UserFormPayload = {
@@ -55,7 +55,7 @@ export function UserForm({ editingUser, busy, onCancel, onSubmit }: UserFormProp
       <Field label="Nombre">
         <Input
           required
-          className="mt-2"
+          className="mt-2 rounded-md border border-slate-300 bg-white px-3 py-2 text-slate-900 shadow-sm outline-none transition-all placeholder:text-slate-400 hover:border-slate-400 focus:border-slate-500"
           placeholder="Ej. Valentina Alvarez"
           value={form.nombre}
           onChange={(event) => updateField("nombre", event.target.value)}
@@ -64,7 +64,7 @@ export function UserForm({ editingUser, busy, onCancel, onSubmit }: UserFormProp
       <Field label="Cedula">
         <Input
           required
-          className="mt-2"
+          className="mt-2 rounded-md border border-slate-300 bg-white px-3 py-2 text-slate-900 shadow-sm outline-none transition-all placeholder:text-slate-400 hover:border-slate-400 focus:border-slate-500"
           placeholder="Ej. 1098123456"
           value={form.cc}
           onChange={(event) => updateField("cc", event.target.value)}
@@ -73,7 +73,7 @@ export function UserForm({ editingUser, busy, onCancel, onSubmit }: UserFormProp
       <Field label="Email">
         <Input
           required
-          className="mt-2"
+          className="mt-2 rounded-md border border-slate-300 bg-white px-3 py-2 text-slate-900 shadow-sm outline-none transition-all placeholder:text-slate-400 hover:border-slate-400 focus:border-slate-500"
           placeholder="Ej. valentina@empresa.com"
           type="email"
           value={form.email}
@@ -83,7 +83,7 @@ export function UserForm({ editingUser, busy, onCancel, onSubmit }: UserFormProp
       <Field label={editingUser ? "Nueva password" : "Password"}>
         <Input
           required={!editingUser}
-          className="mt-2"
+          className="mt-2 rounded-md border border-slate-300 bg-white px-3 py-2 text-slate-900 shadow-sm outline-none transition-all placeholder:text-slate-400 hover:border-slate-400 focus:border-slate-500"
           placeholder={editingUser ? "Dejar vacio para conservar la actual" : "Minimo 6 caracteres"}
           type="password"
           value={form.password}
@@ -92,31 +92,23 @@ export function UserForm({ editingUser, busy, onCancel, onSubmit }: UserFormProp
       </Field>
       <div className="grid gap-2">
         <Label className="text-sm font-medium text-slate-700">Rol</Label>
-        <Select
+        <select
           aria-label="Rol"
-          className="mt-2"
-          selectedKey={form.role}
-          onSelectionChange={(key) => updateField("role", String(key) as Role)}
+          className="mt-2 min-h-11 rounded-md border border-slate-300 bg-white px-3 text-slate-900 shadow-sm outline-none transition-all hover:border-slate-400 focus:border-slate-500"
+          value={form.role}
+          onChange={(event) => updateField("role", event.target.value as Role)}
         >
-          <Select.Trigger>
-            <Select.Value />
-            <Select.Indicator />
-          </Select.Trigger>
-          <Select.Popover>
-            <ListBox aria-label="Opciones de rol">
-              <ListBox.Item id="user">Usuario</ListBox.Item>
-              <ListBox.Item id="admin">Administrador</ListBox.Item>
-            </ListBox>
-          </Select.Popover>
-        </Select>
+          <option value="user">Usuario</option>
+          <option value="admin">Administrador</option>
+        </select>
       </div>
 
       <div className="flex flex-wrap gap-3 pt-2">
-        <Button className="min-w-40 rounded-full bg-slate-900 text-white" isDisabled={busy} type="submit">
+        <Button className="min-w-40 rounded-md bg-slate-900 text-white transition-all hover:bg-slate-800" isDisabled={busy} type="submit">
           {busy ? "Guardando..." : editingUser ? "Guardar cambios" : "Crear usuario"}
         </Button>
         <Button
-          className="rounded-full border border-slate-200 bg-white text-slate-800"
+          className="rounded-md border border-slate-300 bg-white text-slate-800 transition-all hover:border-slate-400 hover:bg-slate-50"
           type="button"
           variant="outline"
           onPress={onCancel}
