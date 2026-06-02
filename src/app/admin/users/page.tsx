@@ -1,15 +1,13 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import {
   Avatar,
   Button,
   Card,
   Chip,
   Header,
-  Modal,
-  Spinner,
-  useOverlayState
+  Spinner
 } from "@heroui/react";
 import { ProtectedView } from "@/components/ProtectedView";
 import { UserCard } from "@/components/UserCard";
@@ -39,14 +37,8 @@ function AdminUsersContent({
   const [userToDelete, setUserToDelete] = useState<User | null>(null);
   const [busy, setBusy] = useState(false);
   const [feedback, setFeedback] = useState<string | null>(null);
-  const formModal = useOverlayState();
-  const deleteModal = useOverlayState();
-
-  useEffect(() => {
-    if (editingUser) {
-      formModal.open();
-    }
-  }, [editingUser, formModal]);
+  const [isFormOpen, setIsFormOpen] = useState(false);
+  const [isDeleteOpen, setIsDeleteOpen] = useState(false);
 
   async function handleSubmit(payload: UserFormPayload) {
     try {
@@ -62,7 +54,7 @@ function AdminUsersContent({
       }
 
       setEditingUser(null);
-      formModal.close();
+      setIsFormOpen(false);
     } catch (err) {
       setFeedback(err instanceof Error ? err.message : "Ocurrio un error inesperado.");
     } finally {
@@ -73,23 +65,24 @@ function AdminUsersContent({
   function handleCreate() {
     setEditingUser(null);
     setFeedback(null);
-    formModal.open();
+    setIsFormOpen(true);
   }
 
   function handleEdit(user: User) {
     setFeedback(null);
     setEditingUser(user);
+    setIsFormOpen(true);
   }
 
   function handleDeleteRequest(user: User) {
     setUserToDelete(user);
     setFeedback(null);
-    deleteModal.open();
+    setIsDeleteOpen(true);
   }
 
   function handleCloseForm() {
     setEditingUser(null);
-    formModal.close();
+    setIsFormOpen(false);
   }
 
   async function handleConfirmDelete() {
@@ -107,7 +100,7 @@ function AdminUsersContent({
       }
 
       setUserToDelete(null);
-      deleteModal.close();
+      setIsDeleteOpen(false);
     } catch (err) {
       setFeedback(err instanceof Error ? err.message : "No fue posible eliminar el usuario.");
     } finally {
@@ -119,28 +112,28 @@ function AdminUsersContent({
     <>
       <main className="app-shell">
         <div className="app-frame space-y-6">
-          <Card className="border border-slate-200/80 bg-white/80 shadow-none backdrop-blur">
+          <Card className="surface-card shadow-none">
             <Card.Content className="p-3 sm:p-4">
               <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                 <div className="flex items-center gap-3">
-                  <Avatar className="bg-blue-600 text-white">
+                  <Avatar className="h-11 w-11 bg-slate-900 text-white shadow-[0_10px_24px_rgba(15,23,42,0.12)]">
                     <Avatar.Fallback>{getInitials(userName)}</Avatar.Fallback>
                   </Avatar>
                   <Header className="flex flex-col">
                     <span className="text-sm font-semibold text-slate-900">User Manager</span>
-                    <span className="text-sm text-slate-500">Administracion de usuarios</span>
+                    <span className="text-sm text-slate-500">Centro de gestion</span>
                   </Header>
                 </div>
 
                 <div className="flex flex-wrap items-center gap-3">
-                  <Chip className="bg-blue-100 text-blue-700" size="sm" variant="soft">
-                    Admin
+                  <Chip className="rounded-full border border-slate-200 bg-white/90 px-3 text-slate-700" size="sm" variant="soft">
+                    Acceso administrador
                   </Chip>
-                  <Button className="bg-slate-900 text-white" onPress={handleCreate}>
+                  <Button className="rounded-full bg-slate-900 px-5 text-white" onPress={handleCreate}>
                     Nuevo usuario
                   </Button>
                   <Button
-                    className="border border-slate-200 bg-white text-slate-800"
+                    className="rounded-full border border-slate-200 bg-white/90 text-slate-800"
                     variant="outline"
                     onPress={onLogout}
                   >
@@ -154,7 +147,7 @@ function AdminUsersContent({
           <div className="grid gap-4 md:grid-cols-3">
             <SummaryCard label="Administrador" value={userName} />
             <SummaryCard label="Usuarios" value={String(users.length)} />
-            <Card className="border border-slate-200 bg-slate-50 shadow-none">
+            <Card className="surface-card shadow-none">
               <Card.Content className="gap-2 p-5">
                 <p className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-500">
                   Estado
@@ -166,7 +159,7 @@ function AdminUsersContent({
             </Card>
           </div>
 
-          <Card className="border border-slate-200/80 bg-white/88 shadow-none">
+          <Card className="surface-card shadow-none">
             <Card.Header className="flex flex-col gap-3 p-6 sm:flex-row sm:items-center sm:justify-between sm:p-8">
               <div>
                 <p className="eyebrow">Usuarios</p>
@@ -177,7 +170,7 @@ function AdminUsersContent({
                   Crea, edita y elimina usuarios desde un solo panel.
                 </Card.Description>
               </div>
-              <Chip className="bg-slate-100 text-slate-700" size="sm" variant="soft">
+              <Chip className="rounded-full border border-slate-200 bg-white/90 text-slate-700" size="sm" variant="soft">
                 {users.length} registros
               </Chip>
             </Card.Header>
@@ -197,7 +190,7 @@ function AdminUsersContent({
               {!loading && error ? <div className="message-error">{error}</div> : null}
 
               {!loading && !error && users.length === 0 ? (
-                <Card className="border border-dashed border-slate-200 bg-slate-50 shadow-none">
+                <Card className="surface-card shadow-none">
                   <Card.Content className="px-6 py-10 text-center text-sm text-slate-500">
                     No hay usuarios registrados. ¡Crea el primero!
                   </Card.Content>
@@ -225,80 +218,78 @@ function AdminUsersContent({
         </div>
       </main>
 
-      <Modal state={formModal}>
-        <Modal.Backdrop className="fixed inset-0 bg-slate-900/30 backdrop-blur-sm" isDismissable={false} />
-        <Modal.Container className="fixed inset-0 flex items-center justify-center px-4" placement="center" size="lg">
-          <Modal.Dialog className="relative w-full max-w-lg rounded-[28px] border border-slate-200 bg-white shadow-[0_24px_80px_rgba(15,23,42,0.12)]">
-            <Modal.Header className="flex items-start justify-between gap-4 border-b border-slate-100 px-6 py-5">
+      {isFormOpen ? (
+        <DialogShell>
+          <div className="relative w-full max-w-lg rounded-[32px] border border-white/70 bg-[rgba(255,255,255,0.96)] shadow-[0_28px_90px_rgba(15,23,42,0.18)]">
+            <div className="flex items-start justify-between gap-4 border-b border-slate-100 px-6 py-5">
               <div>
-                <Modal.Heading className="text-xl font-semibold text-slate-900">
+                <h2 className="text-xl font-semibold text-slate-900">
                   {editingUser ? "Editar usuario" : "Nuevo usuario"}
-                </Modal.Heading>
+                </h2>
                 <p className="mt-1 text-sm text-slate-500">
                   Completa la informacion del usuario.
                 </p>
               </div>
               <Chip
-                className={editingUser ? "bg-blue-100 text-blue-700" : "bg-slate-100 text-slate-700"}
+                className={editingUser ? "rounded-full border border-blue-100 bg-blue-50 text-blue-700" : "rounded-full border border-slate-200 bg-white text-slate-700"}
                 size="sm"
                 variant="soft"
               >
                 {editingUser ? "Edicion" : "Crear"}
               </Chip>
-            </Modal.Header>
-            <Modal.Body className="px-6 py-6">
+            </div>
+            <div className="px-6 py-6">
               <UserForm
                 busy={busy}
                 editingUser={editingUser}
                 onCancel={handleCloseForm}
                 onSubmit={handleSubmit}
               />
-            </Modal.Body>
-          </Modal.Dialog>
-        </Modal.Container>
-      </Modal>
+            </div>
+          </div>
+        </DialogShell>
+      ) : null}
 
-      <Modal state={deleteModal}>
-        <Modal.Backdrop className="fixed inset-0 bg-slate-900/30 backdrop-blur-sm" isDismissable={false} />
-        <Modal.Container className="fixed inset-0 flex items-center justify-center px-4" placement="center" size="md">
-          <Modal.Dialog className="relative w-full max-w-md rounded-[28px] border border-slate-200 bg-white shadow-[0_24px_80px_rgba(15,23,42,0.12)]">
-            <Modal.Header className="border-b border-slate-100 px-6 py-5">
-              <Modal.Heading className="text-xl font-semibold text-slate-900">
+      {isDeleteOpen ? (
+        <DialogShell>
+          <div className="relative w-full max-w-md rounded-[32px] border border-white/70 bg-[rgba(255,255,255,0.96)] shadow-[0_28px_90px_rgba(15,23,42,0.18)]">
+            <div className="border-b border-slate-100 px-6 py-5">
+              <h2 className="text-xl font-semibold text-slate-900">
                 Eliminar usuario
-              </Modal.Heading>
-            </Modal.Header>
-            <Modal.Body className="px-6 py-6">
+              </h2>
+            </div>
+            <div className="px-6 py-6">
               <p className="text-sm leading-6 text-slate-500">
                 {userToDelete
                   ? `Confirma si deseas eliminar a ${userToDelete.nombre}.`
                   : "Confirma esta accion para continuar."}
               </p>
-            </Modal.Body>
-            <Modal.Footer className="flex justify-end gap-3 border-t border-slate-100 px-6 py-5">
+            </div>
+            <div className="flex justify-end gap-3 border-t border-slate-100 px-6 py-5">
               <Button
-                className="border border-slate-200 bg-white text-slate-800"
+                className="rounded-full border border-slate-200 bg-white text-slate-800"
                 variant="outline"
                 onPress={() => {
                   setUserToDelete(null);
-                  deleteModal.close();
+                  setIsDeleteOpen(false);
                 }}
               >
                 Cancelar
               </Button>
-              <Button className="bg-slate-900 text-white" isDisabled={busy} onPress={handleConfirmDelete}>
+              <Button className="rounded-full bg-slate-900 px-5 text-white" isDisabled={busy} onPress={handleConfirmDelete}>
                 {busy ? "Eliminando..." : "Eliminar"}
               </Button>
-            </Modal.Footer>
-          </Modal.Dialog>
-        </Modal.Container>
-      </Modal>
+            </div>
+          </div>
+        </DialogShell>
+      ) : null}
     </>
   );
 }
 
 function SummaryCard({ label, value }: { label: string; value: string }) {
   return (
-    <Card className="border border-slate-200 bg-slate-50 shadow-none">
+    <Card className="surface-card shadow-none">
       <Card.Content className="gap-2 p-5">
         <p className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-500">{label}</p>
         <p className="text-lg font-semibold text-slate-900">{value}</p>
@@ -314,4 +305,13 @@ function getInitials(value: string) {
     .slice(0, 2)
     .map((part) => part[0]?.toUpperCase() ?? "")
     .join("");
+}
+
+function DialogShell({ children }: { children: React.ReactNode }) {
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center px-4">
+      <div className="absolute inset-0 bg-[rgba(241,245,249,0.62)] backdrop-blur-sm" />
+      <div className="relative z-10 w-full">{children}</div>
+    </div>
+  );
 }

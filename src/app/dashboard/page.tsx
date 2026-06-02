@@ -10,7 +10,7 @@ export default function DashboardPage() {
       {({ user, clearSession, hasRole }) => (
         <main className="app-shell">
           <div className="mx-auto flex w-full max-w-6xl flex-col gap-6 lg:gap-8">
-            <Card className="border border-slate-200 bg-white shadow-[0_10px_30px_rgba(15,23,42,0.05)]">
+            <Card className="surface-card shadow-none">
               <Card.Content className="px-4 py-4 sm:px-6">
                 <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
                   <div className="flex items-center gap-4">
@@ -20,13 +20,13 @@ export default function DashboardPage() {
 
                     <div className="min-w-0">
                       <p className="text-sm font-semibold text-slate-900">User Manager</p>
-                      <p className="text-sm text-slate-500">Panel de usuario</p>
+                      <p className="text-sm text-slate-500">Espacio personal</p>
                     </div>
                   </div>
 
                   <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
                     <Chip
-                      className={getRoleChipClass(user?.role)}
+                      className={`${getRoleChipClass(user?.role)} rounded-full border px-3`}
                       size="sm"
                       variant="soft"
                     >
@@ -34,7 +34,7 @@ export default function DashboardPage() {
                     </Chip>
 
                     <Button
-                      className="h-11 border border-slate-200 bg-white px-4 font-medium text-slate-700 shadow-sm hover:bg-slate-50"
+                      className="h-11 rounded-full border border-slate-200 bg-white/90 px-4 font-medium text-slate-700 shadow-none hover:bg-white"
                       variant="outline"
                       onPress={clearSession}
                     >
@@ -46,11 +46,9 @@ export default function DashboardPage() {
             </Card>
 
             <div className="grid gap-6 xl:grid-cols-[minmax(0,1.5fr)_360px]">
-              <Card className="border border-slate-200 bg-white shadow-[0_14px_34px_rgba(15,23,42,0.06)]">
+              <Card className="surface-card shadow-none">
                 <Card.Header className="flex flex-col items-start gap-2 px-5 pb-0 pt-6 sm:px-8 sm:pt-8">
-                  <Chip className="bg-slate-100 text-slate-700" size="sm" variant="soft">
-                    Sesion activa
-                  </Chip>
+                  <p className="eyebrow">Sesion activa</p>
                   <Card.Title className="text-[1.75rem] font-semibold text-slate-900 sm:text-[2rem]">
                     Hola, {user?.nombre}
                   </Card.Title>
@@ -89,7 +87,7 @@ export default function DashboardPage() {
                 </Card.Content>
               </Card>
 
-              <Card className="border border-slate-200 bg-white shadow-[0_14px_34px_rgba(15,23,42,0.06)]">
+              <Card className="surface-card shadow-none">
                 <Card.Header className="flex flex-col items-start gap-2 px-5 pb-0 pt-6 sm:px-6 sm:pt-7">
                   <Card.Title className="text-xl font-semibold text-slate-900">
                     Accesos disponibles
@@ -100,7 +98,7 @@ export default function DashboardPage() {
                 </Card.Header>
 
                 <Card.Content className="grid gap-5 px-5 pb-5 pt-6 sm:px-6 sm:pb-6">
-                  <div className="rounded-2xl border border-slate-200 bg-slate-50 px-4 py-4">
+                  <div className="rounded-[28px] border border-slate-100 bg-[linear-gradient(135deg,rgba(255,255,255,0.98),rgba(248,250,252,0.94))] px-4 py-4">
                     <div className="flex items-start justify-between gap-3">
                       <div>
                         <p className="text-sm font-medium text-slate-900">Cuenta</p>
@@ -111,7 +109,7 @@ export default function DashboardPage() {
                         </p>
                       </div>
                       <Chip
-                        className={hasRole("admin") ? "bg-blue-100 text-blue-700" : "bg-emerald-100 text-emerald-700"}
+                        className={hasRole("admin") ? "rounded-full border border-blue-100 bg-blue-50 text-blue-700" : "rounded-full border border-emerald-100 bg-emerald-50 text-emerald-700"}
                         size="sm"
                         variant="soft"
                       >
@@ -122,12 +120,12 @@ export default function DashboardPage() {
 
                   {hasRole("admin") ? (
                     <Link href="/admin/users" className="block">
-                      <Button className="h-11 w-full bg-slate-900 font-medium text-white shadow-sm">
-                        Ir a /admin/users
+                      <Button className="h-11 w-full rounded-full bg-slate-900 font-medium text-white shadow-none">
+                        Gestionar usuarios
                       </Button>
                     </Link>
                   ) : (
-                    <div className="rounded-2xl border border-slate-200 bg-white px-4 py-4 text-sm text-slate-600">
+                    <div className="rounded-[28px] border border-slate-100 bg-white/90 px-4 py-4 text-sm text-slate-600">
                       Tu cuenta esta activa.
                     </div>
                   )}
@@ -143,7 +141,7 @@ export default function DashboardPage() {
 
 function InfoCard({ label, value }: { label: string; value: string }) {
   return (
-    <Card className="border border-slate-200 bg-slate-50 shadow-none">
+    <Card className="rounded-[28px] border border-slate-100 bg-white/90 shadow-none">
       <Card.Content className="gap-1 px-4 py-4 sm:px-5 sm:py-5">
         <p className="text-sm font-medium text-slate-500">{label}</p>
         <p className="break-all text-base font-semibold text-slate-900">{value}</p>
@@ -162,7 +160,7 @@ function StatusCard({
   helper: string;
 }) {
   return (
-    <div className="rounded-2xl border border-slate-200 bg-white px-4 py-4 shadow-sm">
+    <div className="rounded-[28px] border border-slate-100 bg-white/92 px-4 py-4">
       <p className="text-sm font-medium text-slate-500">{label}</p>
       <p className="mt-2 text-base font-semibold text-slate-900">{value}</p>
       <p className="mt-1 text-sm leading-6 text-slate-500">{helper}</p>
@@ -180,7 +178,9 @@ function getInitials(value: string) {
 }
 
 function getRoleChipClass(role?: string) {
-  return role === "admin" ? "bg-blue-100 text-blue-700" : "bg-emerald-100 text-emerald-700";
+  return role === "admin"
+    ? "border-blue-100 bg-blue-50 text-blue-700"
+    : "border-emerald-100 bg-emerald-50 text-emerald-700";
 }
 
 function getRoleLabel(role?: string) {

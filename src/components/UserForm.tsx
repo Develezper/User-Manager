@@ -112,11 +112,11 @@ export function UserForm({ editingUser, busy, onCancel, onSubmit }: UserFormProp
       </div>
 
       <div className="flex flex-wrap gap-3 pt-2">
-        <Button className="min-w-40 bg-slate-900 text-white" isDisabled={busy} type="submit">
+        <Button className="min-w-40 rounded-full bg-slate-900 text-white" isDisabled={busy} type="submit">
           {busy ? "Guardando..." : editingUser ? "Guardar cambios" : "Crear usuario"}
         </Button>
         <Button
-          className="border border-slate-200 bg-white text-slate-800"
+          className="rounded-full border border-slate-200 bg-white text-slate-800"
           type="button"
           variant="outline"
           onPress={onCancel}

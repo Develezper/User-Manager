@@ -15,14 +15,14 @@ type UserCardProps = {
 
 const roleClasses: Record<Role, { card: string; avatar: string; chip: string }> = {
   admin: {
-    card: "border border-indigo-200 bg-indigo-50/70",
-    avatar: "bg-indigo-600 text-white",
-    chip: "bg-indigo-100 text-indigo-700",
+    card: "border border-indigo-100/80 bg-[linear-gradient(135deg,rgba(255,255,255,0.98),rgba(238,242,255,0.94))]",
+    avatar: "bg-indigo-600 text-white shadow-[0_10px_26px_rgba(79,70,229,0.22)]",
+    chip: "border border-indigo-100 bg-indigo-50 text-indigo-700",
   },
   user: {
-    card: "border border-slate-200 bg-slate-100/80",
-    avatar: "bg-slate-700 text-white",
-    chip: "bg-slate-200 text-slate-700",
+    card: "border border-slate-200/80 bg-[linear-gradient(135deg,rgba(255,255,255,0.98),rgba(248,250,252,0.94))]",
+    avatar: "bg-slate-700 text-white shadow-[0_10px_26px_rgba(51,65,85,0.18)]",
+    chip: "border border-slate-200 bg-white text-slate-700",
   },
 };
 
@@ -31,7 +31,7 @@ export function UserCard({ nombre, cc, email, role, onEdit, onDelete, user }: Us
 
   return (
     <Card
-      className={`${classes.card} shadow-none`}
+      className={`${classes.card} rounded-[30px] shadow-[0_18px_46px_rgba(15,23,42,0.06)]`}
     >
       <Card.Content className="flex h-full flex-col gap-5 p-6">
         <div className="flex items-start justify-between gap-4">
@@ -45,7 +45,7 @@ export function UserCard({ nombre, cc, email, role, onEdit, onDelete, user }: Us
             </div>
           </div>
           <Chip
-            className={classes.chip}
+            className={`${classes.chip} rounded-full`}
             size="sm"
             variant="soft"
           >
@@ -63,16 +63,16 @@ export function UserCard({ nombre, cc, email, role, onEdit, onDelete, user }: Us
         </div>
 
         <div className="mt-auto flex gap-3">
-          <Button className="bg-slate-900 px-4 text-sm text-white" size="sm" onPress={() => onEdit(user)}>
-            ✏️ Editar
+          <Button className="rounded-full bg-slate-900 px-4 text-sm text-white" size="sm" onPress={() => onEdit(user)}>
+            Editar
           </Button>
           <Button
-            className="border border-slate-200 bg-white px-4 text-sm text-slate-800"
+            className="rounded-full border border-slate-200 bg-white px-4 text-sm text-slate-800"
             size="sm"
             variant="outline"
             onPress={() => onDelete(user)}
           >
-            🗑️ Eliminar
+            Eliminar
           </Button>
         </div>
       </Card.Content>
