@@ -1,9 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Button } from "@heroui/button";
-import { Input } from "@heroui/input";
-import { Select, SelectItem } from "@heroui/select";
+import { Button, Input, Select, SelectItem } from "@heroui/react";
 import type { Role, User, UserFormPayload } from "@/types/user";
 
 const initialState: UserFormPayload = {

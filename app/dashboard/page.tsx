@@ -1,9 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Button } from "@heroui/button";
-import { Card, CardBody } from "@heroui/card";
-import { Chip } from "@heroui/chip";
+import { Button, Card, CardBody, Chip } from "@heroui/react";
 import { ProtectedView } from "@/components/ProtectedView";
 
 export default function DashboardPage() {

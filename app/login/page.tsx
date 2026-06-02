@@ -2,10 +2,7 @@
 
 import { FormEvent, useState } from "react";
 import Link from "next/link";
-import { Button } from "@heroui/button";
-import { Card, CardBody } from "@heroui/card";
-import { Chip } from "@heroui/chip";
-import { Input } from "@heroui/input";
+import { Button, Card, CardBody, Chip, Input } from "@heroui/react";
 import { login } from "@/services/authService";
 import { useAuthSession } from "@/hooks/useAuthSession";
 import { useRouter } from "next/navigation";

@@ -1,10 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Button } from "@heroui/button";
-import { Card, CardBody } from "@heroui/card";
-import { Chip } from "@heroui/chip";
-import { Spinner } from "@heroui/spinner";
+import { Button, Card, CardBody, Chip, Spinner } from "@heroui/react";
 import { ProtectedView } from "@/components/ProtectedView";
 import { UserCard } from "@/components/UserCard";
 import { UserForm } from "@/components/UserForm";
