@@ -60,7 +60,7 @@ export default function RegisterPage() {
                   <Label className="text-sm font-medium text-slate-700">Nombre</Label>
                   <Input
                     required
-                    className="mt-2"
+                    className="mt-2 rounded-xl border border-slate-300 bg-white px-3 py-2 text-slate-900 shadow-none outline-none transition-colors placeholder:text-slate-400 hover:border-slate-400 focus:border-slate-500"
                     placeholder="Tu nombre completo"
                     value={nombre}
                     onChange={(event) => setNombre(event.target.value)}
@@ -71,7 +71,7 @@ export default function RegisterPage() {
                   <Label className="text-sm font-medium text-slate-700">Cedula</Label>
                   <Input
                     required
-                    className="mt-2"
+                    className="mt-2 rounded-xl border border-slate-300 bg-white px-3 py-2 text-slate-900 shadow-none outline-none transition-colors placeholder:text-slate-400 hover:border-slate-400 focus:border-slate-500"
                     placeholder="Tu documento"
                     value={cc}
                     onChange={(event) => setCc(event.target.value)}
@@ -83,7 +83,7 @@ export default function RegisterPage() {
                 <Label className="text-sm font-medium text-slate-700">Email</Label>
                 <Input
                   required
-                  className="mt-2"
+                  className="mt-2 rounded-xl border border-slate-300 bg-white px-3 py-2 text-slate-900 shadow-none outline-none transition-colors placeholder:text-slate-400 hover:border-slate-400 focus:border-slate-500"
                   placeholder="correo@empresa.com"
                   type="email"
                   value={email}
@@ -95,7 +95,7 @@ export default function RegisterPage() {
                 <Label className="text-sm font-medium text-slate-700">Password</Label>
                 <Input
                   required
-                  className="mt-2"
+                  className="mt-2 rounded-xl border border-slate-300 bg-white px-3 py-2 text-slate-900 shadow-none outline-none transition-colors placeholder:text-slate-400 hover:border-slate-400 focus:border-slate-500"
                   placeholder="Minimo 6 caracteres"
                   type="password"
                   value={password}
