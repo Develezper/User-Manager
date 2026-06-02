@@ -25,6 +25,7 @@ bun run dev
 ```
 
 The app runs at `http://localhost:3000`.
+Production site: https://user-manager-opal.vercel.app/login
 
 ## Main Routes
 
@@ -48,12 +49,18 @@ Important: the panel only allows access to users with the `admin` role.
 
 ### Access Credentials
 
-The project does not publish admin credentials inside the repository.
+Run the seed script to create (or reset) the admin account:
 
-To sign in, you need an administrator account that already exists in the database, for example:
+```bash
+bun run seed:admin
+```
 
-- Email: `admin@example.com`
-- Password: `your admin password`
+Then sign in at `/login` with:
+
+| Field    | Value              |
+|----------|--------------------|
+| Email    | `admin@example.com`|
+| Password | `Admin123!`        |
 
 After signing in through `/login`, you can open `/admin/users` from the dashboard.
 
