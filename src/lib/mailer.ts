@@ -17,7 +17,7 @@ function normalizeGmailAppPassword(value?: string) {
   return value?.replace(/\s+/g, "").trim();
 }
 
-function getTransporter() {
+function getMailConfig() {
   const user = normalizeEnvValue(process.env.GMAIL_USER);
   const pass = normalizeGmailAppPassword(process.env.GMAIL_APP_PASSWORD);
 
@@ -27,9 +27,15 @@ function getTransporter() {
 
   if (pass.length !== GMAIL_APP_PASSWORD_LENGTH) {
     throw new Error(
-      "GMAIL_APP_PASSWORD no parece una App Password de Gmail valida. Usa la App Password de 16 caracteres, no una API key."
+      "La clave de correo no parece una App Password de Gmail valida. Usa la contrasena de aplicacion de 16 caracteres, no una API key."
     );
   }
+
+  return { user, pass };
+}
+
+function getTransporter() {
+  const { user, pass } = getMailConfig();
 
   return nodemailer.createTransport({
     service: "gmail",
@@ -44,7 +50,7 @@ export async function sendWelcomeEmail({
   role
 }: WelcomeEmailInput) {
   const transporter = getTransporter();
-  const from = normalizeEnvValue(process.env.GMAIL_USER);
+  const { user: from } = getMailConfig();
 
   await transporter.sendMail({
     from,
