@@ -29,12 +29,16 @@ export async function POST(request: Request) {
       role: "user"
     });
 
-    await sendWelcomeEmail({
-      nombre,
-      email,
-      password,
-      role: "user"
-    });
+    try {
+      await sendWelcomeEmail({
+        nombre,
+        email,
+        password,
+        role: "user"
+      });
+    } catch (error) {
+      console.error("No fue posible enviar el correo de bienvenida.", error);
+    }
 
     return NextResponse.json(
       {

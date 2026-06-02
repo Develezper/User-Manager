@@ -57,12 +57,7 @@ export default function LoginPage() {
                 <Label className="text-sm font-medium text-slate-700">Email</Label>
                 <Input
                   required
-                  className="mt-2"
-                  classNames={{
-                    inputWrapper:
-                      "border border-slate-300 bg-white shadow-none transition-colors hover:border-slate-400 data-[focus=true]:border-slate-500",
-                    input: "text-slate-900 placeholder:text-slate-400",
-                  }}
+                  className="mt-2 rounded-xl border border-slate-300 bg-white px-3 py-2 text-slate-900 shadow-none outline-none transition-colors placeholder:text-slate-400 hover:border-slate-400 focus:border-slate-500"
                   placeholder="admin@empresa.com"
                   type="email"
                   value={email}
@@ -74,12 +69,7 @@ export default function LoginPage() {
                 <Label className="text-sm font-medium text-slate-700">Password</Label>
                 <Input
                   required
-                  className="mt-2"
-                  classNames={{
-                    inputWrapper:
-                      "border border-slate-300 bg-white shadow-none transition-colors hover:border-slate-400 data-[focus=true]:border-slate-500",
-                    input: "text-slate-900 placeholder:text-slate-400",
-                  }}
+                  className="mt-2 rounded-xl border border-slate-300 bg-white px-3 py-2 text-slate-900 shadow-none outline-none transition-colors placeholder:text-slate-400 hover:border-slate-400 focus:border-slate-500"
                   placeholder="Tu password"
                   type="password"
                   value={password}
