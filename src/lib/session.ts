@@ -151,38 +151,3 @@ export function clearSessionCookie(response: NextResponse) {
     secure: process.env.NODE_ENV === "production"
   });
 }
-
-export function getClientStoredSession() {
-  if (typeof window === "undefined") {
-    return null;
-  }
-
-  const rawSession = window.localStorage.getItem(SESSION_STORAGE_KEY);
-
-  if (!rawSession) {
-    return null;
-  }
-
-  try {
-    return JSON.parse(rawSession) as SessionUser;
-  } catch {
-    window.localStorage.removeItem(SESSION_STORAGE_KEY);
-    return null;
-  }
-}
-
-export function storeClientSession(user: SessionUser) {
-  if (typeof window === "undefined") {
-    return;
-  }
-
-  window.localStorage.setItem(SESSION_STORAGE_KEY, JSON.stringify(user));
-}
-
-export function clearClientSession() {
-  if (typeof window === "undefined") {
-    return;
-  }
-
-  window.localStorage.removeItem(SESSION_STORAGE_KEY);
-}
