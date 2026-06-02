@@ -13,19 +13,30 @@ type UserCardProps = {
   user: User;
 };
 
+const roleClasses: Record<Role, { card: string; avatar: string; chip: string }> = {
+  admin: {
+    card: "border border-indigo-200 bg-indigo-50/70",
+    avatar: "bg-indigo-600 text-white",
+    chip: "bg-indigo-100 text-indigo-700",
+  },
+  user: {
+    card: "border border-slate-200 bg-slate-100/80",
+    avatar: "bg-slate-700 text-white",
+    chip: "bg-slate-200 text-slate-700",
+  },
+};
+
 export function UserCard({ nombre, cc, email, role, onEdit, onDelete, user }: UserCardProps) {
-  const isAdmin = role === "admin";
+  const classes = roleClasses[role];
 
   return (
     <Card
-      className={`border ${
-        isAdmin ? "border-blue-100 bg-blue-50/70" : "border-slate-200 bg-slate-100/80"
-      } shadow-none`}
+      className={`${classes.card} shadow-none`}
     >
       <Card.Content className="flex h-full flex-col gap-5 p-6">
         <div className="flex items-start justify-between gap-4">
           <div className="flex items-center gap-3">
-            <Avatar className={isAdmin ? "bg-blue-600 text-white" : "bg-slate-700 text-white"}>
+            <Avatar className={classes.avatar}>
               <Avatar.Fallback>{getInitials(nombre)}</Avatar.Fallback>
             </Avatar>
             <div>
@@ -34,7 +45,7 @@ export function UserCard({ nombre, cc, email, role, onEdit, onDelete, user }: Us
             </div>
           </div>
           <Chip
-            className={isAdmin ? "bg-blue-100 text-blue-700" : "bg-slate-200 text-slate-700"}
+            className={classes.chip}
             size="sm"
             variant="soft"
           >
