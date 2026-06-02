@@ -1,7 +1,7 @@
 "use client";
 
 import { FormEvent, useState } from "react";
-import { Button, Card, Chip, Input, Label, TextField } from "@heroui/react";
+import { Button, Card, Input, Label, TextField } from "@heroui/react";
 import { login } from "@/services/authService";
 import { useAuthSession } from "@/hooks/useAuthSession";
 import { useRouter } from "next/navigation";
@@ -39,11 +39,7 @@ export default function LoginPage() {
     <main className="app-shell flex items-center justify-center overflow-hidden">
       <div className="app-frame flex w-full justify-center">
         <Card className="w-full max-w-md border border-slate-200/80 bg-white/90 shadow-[0_24px_80px_rgba(15,23,42,0.08)] backdrop-blur">
-          <Card.Header className="flex flex-col items-center gap-4 px-6 pt-8 text-center sm:px-8">
-            <span className="badge badge-dark">UM</span>
-            <Chip className="bg-slate-100 text-slate-700" size="sm" variant="soft">
-              Acceso protegido
-            </Chip>
+          <Card.Header className="flex flex-col items-center gap-2 px-6 pt-8 text-center sm:px-8">
             <div className="space-y-2">
               <Card.Title className="text-3xl font-semibold tracking-[-0.03em] text-slate-900 sm:text-4xl">
                 User Manager
@@ -88,11 +84,6 @@ export default function LoginPage() {
             </form>
           </Card.Content>
 
-          <Card.Footer className="justify-center px-6 pb-8 pt-0 sm:px-8">
-            <p className="text-center text-sm text-slate-500">
-              Acceso protegido para usuarios registrados.
-            </p>
-          </Card.Footer>
         </Card>
       </div>
     </main>
