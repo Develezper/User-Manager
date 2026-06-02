@@ -7,7 +7,7 @@ import {
   clearClientSession,
   getClientStoredSession,
   storeClientSession
-} from "@/lib/session";
+} from "@/lib/session.client";
 import type { Role, SessionUser } from "@/types/user";
 
 type Options = {
