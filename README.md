@@ -10,8 +10,10 @@ Copia `.env.example` a `.env` y completa tus credenciales:
 MONGODB_URI=mongodb+srv://...
 MONGODB_DB=user-manager-public
 GMAIL_USER=tu_correo@gmail.com
-GMAIL_APP_PASSWORD=tu_app_password
+GMAIL_APP_PASSWORD=tu_app_password_de_16_caracteres
 ```
+
+`GMAIL_APP_PASSWORD` debe ser una App Password de Gmail para SMTP, no una API key de Google/Gmail.
 
 ## Scripts
 

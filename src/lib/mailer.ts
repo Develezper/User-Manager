@@ -7,12 +7,28 @@ type WelcomeEmailInput = {
   role: string;
 };
 
+const GMAIL_APP_PASSWORD_LENGTH = 16;
+
+function normalizeEnvValue(value?: string) {
+  return value?.trim();
+}
+
+function normalizeGmailAppPassword(value?: string) {
+  return value?.replace(/\s+/g, "").trim();
+}
+
 function getTransporter() {
-  const user = process.env.GMAIL_USER;
-  const pass = process.env.GMAIL_APP_PASSWORD;
+  const user = normalizeEnvValue(process.env.GMAIL_USER);
+  const pass = normalizeGmailAppPassword(process.env.GMAIL_APP_PASSWORD);
 
   if (!user || !pass) {
-    return null;
+    throw new Error("Faltan GMAIL_USER o GMAIL_APP_PASSWORD en las variables de entorno.");
+  }
+
+  if (pass.length !== GMAIL_APP_PASSWORD_LENGTH) {
+    throw new Error(
+      "GMAIL_APP_PASSWORD no parece una App Password de Gmail valida. Usa la App Password de 16 caracteres, no una API key."
+    );
   }
 
   return nodemailer.createTransport({
@@ -28,13 +44,10 @@ export async function sendWelcomeEmail({
   role
 }: WelcomeEmailInput) {
   const transporter = getTransporter();
-
-  if (!transporter) {
-    return;
-  }
+  const from = normalizeEnvValue(process.env.GMAIL_USER);
 
   await transporter.sendMail({
-    from: process.env.GMAIL_USER,
+    from,
     to: email,
     subject: "Bienvenido a User Manager",
     html: `

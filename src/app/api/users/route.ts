@@ -57,7 +57,11 @@ export async function POST(request: Request) {
       role
     });
 
-    await sendWelcomeEmail({ nombre, email, password, role });
+    try {
+      await sendWelcomeEmail({ nombre, email, password, role });
+    } catch (error) {
+      console.error("No fue posible enviar el correo de bienvenida.", error);
+    }
 
     return NextResponse.json(
       {
