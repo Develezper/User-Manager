@@ -1,17 +1,22 @@
 @import "tailwindcss";
 
 :root {
-  --bg: #f7f1e8;
-  --paper: rgba(255, 250, 242, 0.82);
-  --ink: #16110f;
-  --muted: #6d625a;
-  --line: rgba(22, 17, 15, 0.08);
-  --accent: #ff6f3c;
-  --accent-soft: #ffd7c8;
-  --teal: #0f766e;
+  --background: #f5f7fb;
+  --background-warm: #fcfcfd;
+  --surface: rgba(255, 255, 255, 0.88);
+  --surface-strong: #ffffff;
+  --foreground: #111827;
+  --muted: #667085;
+  --line: rgba(15, 23, 42, 0.08);
+  --line-strong: rgba(15, 23, 42, 0.12);
+  --primary: #111827;
+  --primary-soft: #e5e7eb;
   --admin: #1d4ed8;
-  --user: #52525b;
+  --admin-soft: #e8efff;
+  --user: #0f766e;
+  --user-soft: #e8f8f4;
   --danger: #b42318;
+  --danger-soft: #fef3f2;
 }
 
 * {
@@ -20,17 +25,22 @@
 
 html {
   background:
-    radial-gradient(circle at top left, rgba(255, 111, 60, 0.22), transparent 30%),
-    radial-gradient(circle at top right, rgba(15, 118, 110, 0.16), transparent 26%),
-    linear-gradient(135deg, #f9f3eb 0%, #f1ece4 48%, #efe7de 100%);
+    radial-gradient(circle at top left, rgba(148, 163, 184, 0.12), transparent 26%),
+    radial-gradient(circle at top right, rgba(203, 213, 225, 0.18), transparent 22%),
+    linear-gradient(180deg, var(--background-warm) 0%, var(--background) 100%);
   min-height: 100%;
 }
 
 body {
   margin: 0;
   min-height: 100vh;
-  color: var(--ink);
-  font-family: "Avenir Next", "Segoe UI", sans-serif;
+  color: var(--foreground);
+  font-family:
+    "Inter",
+    "Segoe UI",
+    "Helvetica Neue",
+    Arial,
+    sans-serif;
 }
 
 a {
@@ -38,50 +48,216 @@ a {
   text-decoration: none;
 }
 
-.noise {
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  opacity: 0.28;
-  background-image:
-    linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(22, 17, 15, 0.025) 1px, transparent 1px);
-  background-size: 16px 16px;
+button,
+input,
+select,
+textarea {
+  font: inherit;
 }
 
-.shell {
+.app-shell {
   position: relative;
   min-height: 100vh;
   padding: 24px;
 }
 
-.frame {
+.app-shell::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 20% 15%, rgba(255, 255, 255, 0.72), transparent 24%),
+    radial-gradient(circle at 85% 10%, rgba(226, 232, 240, 0.72), transparent 22%);
+}
+
+.app-frame {
   max-width: 1260px;
   margin: 0 auto;
 }
 
-.panel {
-  background: var(--paper);
-  backdrop-filter: blur(20px);
+.app-navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 18px 22px;
   border: 1px solid var(--line);
-  border-radius: 32px;
-  box-shadow: 0 18px 50px rgba(47, 37, 28, 0.08);
+  border-radius: 24px;
+  background: rgba(255, 255, 255, 0.72);
+  backdrop-filter: blur(20px);
+  box-shadow: 0 14px 40px rgba(15, 23, 42, 0.06);
 }
 
-.editorial-title {
-  font-family: "Iowan Old Style", "Palatino Linotype", serif;
-  letter-spacing: -0.04em;
+.surface-card {
+  border: 1px solid var(--line);
+  border-radius: 28px;
+  background: var(--surface);
+  backdrop-filter: blur(18px);
+  box-shadow: 0 18px 50px rgba(15, 23, 42, 0.06);
 }
 
-.shadow-cut {
-  box-shadow: 14px 14px 0 rgba(22, 17, 15, 0.07);
+.surface-card-strong {
+  border: 1px solid var(--line);
+  border-radius: 28px;
+  background: var(--surface-strong);
+  box-shadow: 0 16px 40px rgba(15, 23, 42, 0.05);
+}
+
+.info-card {
+  border: 1px solid var(--line);
+  border-radius: 22px;
+  background: rgba(255, 255, 255, 0.8);
+  padding: 20px;
+}
+
+.eyebrow {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.section-title {
+  letter-spacing: -0.03em;
+  color: var(--foreground);
+}
+
+.muted-copy {
+  color: var(--muted);
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.9);
+  padding: 6px 12px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--foreground);
+}
+
+.badge-dark {
+  border-color: transparent;
+  background: var(--primary);
+  color: white;
+}
+
+.badge-admin {
+  border-color: rgba(29, 78, 216, 0.14);
+  background: var(--admin-soft);
+  color: var(--admin);
+}
+
+.badge-user {
+  border-color: rgba(15, 118, 110, 0.14);
+  background: var(--user-soft);
+  color: var(--user);
+}
+
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: 16px;
+  background: var(--primary);
+  padding: 0.875rem 1.125rem;
+  font-weight: 600;
+  color: white;
+  transition:
+    transform 0.18s ease,
+    box-shadow 0.18s ease,
+    opacity 0.18s ease;
+  box-shadow: 0 10px 24px rgba(17, 24, 39, 0.16);
+}
+
+.btn-primary:hover:not(:disabled) {
+  transform: translateY(-1px);
+}
+
+.btn-primary:disabled {
+  cursor: not-allowed;
+  opacity: 0.65;
+}
+
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 16px;
+  border: 1px solid var(--line-strong);
+  background: rgba(255, 255, 255, 0.92);
+  padding: 0.875rem 1.125rem;
+  font-weight: 600;
+  color: var(--foreground);
+  transition:
+    border-color 0.18s ease,
+    background-color 0.18s ease;
+}
+
+.btn-secondary:hover:not(:disabled) {
+  border-color: rgba(15, 23, 42, 0.18);
+  background: white;
+}
+
+.field-label {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: rgba(17, 24, 39, 0.86);
+}
+
+.input-clean {
+  width: 100%;
+  border-radius: 16px;
+  border: 1px solid var(--line-strong);
+  background: rgba(255, 255, 255, 0.92);
+  padding: 0.9rem 1rem;
+  color: var(--foreground);
+  outline: none;
+  transition:
+    border-color 0.18s ease,
+    box-shadow 0.18s ease,
+    background-color 0.18s ease;
+}
+
+.input-clean::placeholder {
+  color: #98a2b3;
+}
+
+.input-clean:focus {
+  border-color: rgba(17, 24, 39, 0.24);
+  background: white;
+  box-shadow: 0 0 0 4px rgba(148, 163, 184, 0.12);
+}
+
+.message-error {
+  border-radius: 16px;
+  border: 1px solid rgba(180, 35, 24, 0.12);
+  background: var(--danger-soft);
+  padding: 0.875rem 1rem;
+  font-size: 0.875rem;
+  color: var(--danger);
+}
+
+.message-muted {
+  border-radius: 16px;
+  border: 1px solid var(--line);
+  background: rgba(248, 250, 252, 0.88);
+  padding: 0.875rem 1rem;
+  font-size: 0.875rem;
+  color: var(--muted);
 }
 
 .status-dot {
+  display: inline-block;
   width: 10px;
   height: 10px;
   border-radius: 999px;
-  display: inline-block;
 }
 
 .status-dot.admin {
@@ -93,7 +269,11 @@ a {
 }
 
 @media (max-width: 768px) {
-  .shell {
+  .app-shell {
     padding: 16px;
+  }
+
+  .app-navbar {
+    padding: 16px 18px;
   }
 }

@@ -1,6 +1,6 @@
 "use client";
 
-import { Button, Card, CardContent, Chip } from "@heroui/react";
+import { Avatar, Button, Card, Chip } from "@heroui/react";
 import type { User } from "@/types/user";
 
 type UserCardProps = {
@@ -14,48 +14,45 @@ export function UserCard({ user, onEdit, onDelete }: UserCardProps) {
 
   return (
     <Card
-      className={`border border-black/5 ${
-        isAdmin ? "bg-blue-50" : "bg-zinc-100"
-      } shadow-cut rounded-[28px]`}
+      className={`border ${
+        isAdmin ? "border-blue-100 bg-blue-50/70" : "border-emerald-100 bg-emerald-50/70"
+      } shadow-none`}
     >
-      <CardContent className="gap-6 p-6">
+      <Card.Content className="flex h-full flex-col gap-5 p-6">
         <div className="flex items-start justify-between gap-4">
-          <div>
-            <p className="text-xs uppercase tracking-[0.28em] text-black/45">Registro activo</p>
-            <h3 className="editorial-title mt-2 text-2xl font-semibold">{user.nombre}</h3>
+          <div className="flex items-center gap-3">
+            <Avatar className={isAdmin ? "bg-blue-600 text-white" : "bg-emerald-600 text-white"}>
+              <Avatar.Fallback>{getInitials(user.nombre)}</Avatar.Fallback>
+            </Avatar>
+            <div>
+              <p className="eyebrow">Registro activo</p>
+              <h3 className="section-title mt-1 text-lg font-semibold">{user.nombre}</h3>
+            </div>
           </div>
           <Chip
-            className={`capitalize ${
-              isAdmin
-                ? "bg-blue-600 text-white"
-                : "bg-zinc-700 text-white"
-            }`}
+            className={isAdmin ? "bg-blue-100 text-blue-700" : "bg-emerald-100 text-emerald-700"}
             size="sm"
-            variant="primary"
+            variant="soft"
           >
             {user.role}
           </Chip>
         </div>
 
-        <div className="grid gap-3 text-sm text-black/70">
+        <div className="grid gap-2 text-sm text-slate-600">
           <p>
-            <span className="font-semibold text-black">CC:</span> {user.cc}
+            <span className="font-semibold text-slate-900">CC:</span> {user.cc}
           </p>
           <p>
-            <span className="font-semibold text-black">Email:</span> {user.email}
+            <span className="font-semibold text-slate-900">Email:</span> {user.email}
           </p>
         </div>
 
-        <div className="flex gap-3">
-          <Button
-            className="bg-black text-white"
-            size="sm"
-            onPress={() => onEdit(user)}
-          >
+        <div className="mt-auto flex gap-3">
+          <Button className="bg-slate-900 px-4 text-sm text-white" size="sm" onPress={() => onEdit(user)}>
             Editar
           </Button>
           <Button
-            className="border border-black/10 bg-white text-black"
+            className="border border-slate-200 bg-white px-4 text-sm text-slate-800"
             size="sm"
             variant="outline"
             onPress={() => onDelete(user)}
@@ -63,7 +60,16 @@ export function UserCard({ user, onEdit, onDelete }: UserCardProps) {
             Eliminar
           </Button>
         </div>
-      </CardContent>
+      </Card.Content>
     </Card>
   );
+}
+
+function getInitials(value: string) {
+  return value
+    .split(" ")
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((part) => part[0]?.toUpperCase() ?? "")
+    .join("");
 }

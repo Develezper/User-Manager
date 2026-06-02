@@ -13,10 +13,10 @@ export function ProtectedView({ children, requiresAdmin = false }: ProtectedView
 
   if (!session.isReady) {
     return (
-      <div className="flex min-h-screen items-center justify-center">
-        <div className="flex flex-col items-center gap-3">
+      <div className="app-shell flex items-center justify-center">
+        <div className="surface-card flex min-w-56 flex-col items-center gap-3 px-8 py-10">
           <Spinner />
-          <p className="text-sm text-black/60">Cargando sesion...</p>
+          <p className="text-sm muted-copy">Cargando sesion...</p>
         </div>
       </div>
     );

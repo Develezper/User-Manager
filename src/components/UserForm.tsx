@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Button } from "@heroui/react";
+import { Button, Input, Label, ListBox, Select, TextField } from "@heroui/react";
 import type { Role, User, UserFormPayload } from "@/types/user";
 
 const initialState: UserFormPayload = {
@@ -53,27 +53,27 @@ export function UserForm({ editingUser, busy, onCancel, onSubmit }: UserFormProp
   return (
     <form className="grid gap-4" onSubmit={handleSubmit}>
       <Field label="Nombre">
-        <input
+        <Input
           required
-          className="w-full rounded-2xl border border-black/10 bg-white px-4 py-3 outline-none transition focus:border-black/30"
+          className="mt-2"
           placeholder="Ej. Valentina Alvarez"
           value={form.nombre}
           onChange={(event) => updateField("nombre", event.target.value)}
         />
       </Field>
       <Field label="Cedula">
-        <input
+        <Input
           required
-          className="w-full rounded-2xl border border-black/10 bg-white px-4 py-3 outline-none transition focus:border-black/30"
+          className="mt-2"
           placeholder="Ej. 1098123456"
           value={form.cc}
           onChange={(event) => updateField("cc", event.target.value)}
         />
       </Field>
       <Field label="Email">
-        <input
+        <Input
           required
-          className="w-full rounded-2xl border border-black/10 bg-white px-4 py-3 outline-none transition focus:border-black/30"
+          className="mt-2"
           placeholder="Ej. valentina@empresa.com"
           type="email"
           value={form.email}
@@ -81,58 +81,48 @@ export function UserForm({ editingUser, busy, onCancel, onSubmit }: UserFormProp
         />
       </Field>
       <Field label={editingUser ? "Nueva password" : "Password"}>
-        <input
+        <Input
           required={!editingUser}
-          className="w-full rounded-2xl border border-black/10 bg-white px-4 py-3 outline-none transition focus:border-black/30"
+          className="mt-2"
           placeholder={editingUser ? "Dejar vacio para conservar la actual" : "Minimo 6 caracteres"}
           type="password"
           value={form.password}
           onChange={(event) => updateField("password", event.target.value)}
         />
       </Field>
-      <Field label="Rol">
-        <div className="grid gap-3 sm:grid-cols-2">
-          {(["user", "admin"] as Role[]).map((role) => (
-            <label
-              key={role}
-              className={`flex cursor-pointer items-center gap-3 rounded-2xl border px-4 py-3 transition ${
-                form.role === role
-                  ? "border-black bg-black text-white"
-                  : "border-black/10 bg-white text-black"
-              }`}
-            >
-              <input
-                checked={form.role === role}
-                className="sr-only"
-                name="role"
-                type="radio"
-                value={role}
-                onChange={() => updateField("role", role)}
-              />
-              <span className="text-sm font-medium capitalize">{role}</span>
-            </label>
-          ))}
-        </div>
-      </Field>
+      <div className="grid gap-2">
+        <Label className="text-sm font-medium text-slate-700">Rol</Label>
+        <Select
+          aria-label="Rol"
+          className="mt-2"
+          selectedKey={form.role}
+          onSelectionChange={(key) => updateField("role", String(key) as Role)}
+        >
+          <Select.Trigger>
+            <Select.Value />
+            <Select.Indicator />
+          </Select.Trigger>
+          <Select.Popover>
+            <ListBox aria-label="Opciones de rol">
+              <ListBox.Item id="user">Usuario</ListBox.Item>
+              <ListBox.Item id="admin">Administrador</ListBox.Item>
+            </ListBox>
+          </Select.Popover>
+        </Select>
+      </div>
 
       <div className="flex flex-wrap gap-3 pt-2">
-        <Button
-          className="bg-[var(--accent)] text-black"
-          isDisabled={busy}
-          type="submit"
-        >
+        <Button className="min-w-40 bg-slate-900 text-white" isDisabled={busy} type="submit">
           {busy ? "Guardando..." : editingUser ? "Guardar cambios" : "Crear usuario"}
         </Button>
-        {editingUser ? (
-          <Button
-            className="border border-black/10 bg-white text-black"
-            type="button"
-            variant="outline"
-            onPress={onCancel}
-          >
-            Cancelar edicion
-          </Button>
-        ) : null}
+        <Button
+          className="border border-slate-200 bg-white text-slate-800"
+          type="button"
+          variant="outline"
+          onPress={onCancel}
+        >
+          {editingUser ? "Cancelar edicion" : "Cerrar"}
+        </Button>
       </div>
     </form>
   );
@@ -146,9 +136,9 @@ function Field({
   children: React.ReactNode;
 }) {
   return (
-    <label className="grid gap-2">
-      <span className="text-sm font-medium text-black/80">{label}</span>
+    <TextField className="grid gap-2">
+      <Label className="text-sm font-medium text-slate-700">{label}</Label>
       {children}
-    </label>
+    </TextField>
   );
 }
