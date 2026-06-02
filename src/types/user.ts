@@ -15,6 +15,13 @@ export type LoginPayload = {
   password: string;
 };
 
+export type RegisterPayload = {
+  nombre: string;
+  cc: string;
+  email: string;
+  password: string;
+};
+
 export type UserFormPayload = {
   nombre: string;
   cc: string;
