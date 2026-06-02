@@ -2,7 +2,12 @@
 
 import { useEffect, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
-import { SESSION_STORAGE_KEY } from "@/lib/session";
+import { getCurrentSession, logout } from "@/services/authService";
+import {
+  clearClientSession,
+  getClientStoredSession,
+  storeClientSession
+} from "@/lib/session";
 import type { Role, SessionUser } from "@/types/user";
 
 type Options = {
@@ -18,38 +23,91 @@ export function useAuthSession(options: Options = {}) {
   const [isReady, setIsReady] = useState(false);
 
   useEffect(() => {
-    const raw = window.localStorage.getItem(SESSION_STORAGE_KEY);
+    let isMounted = true;
+    const storedSession = getClientStoredSession();
 
-    if (!raw) {
+    if (!storedSession) {
+      setUser(null);
+      setIsReady(true);
+
       if (requiresAuth) {
         router.replace("/login");
       }
-      setIsReady(true);
+
       return;
     }
 
-    const sessionUser = JSON.parse(raw) as SessionUser;
-    const isAdmin = sessionUser.role === "admin";
+    async function loadSession() {
+      try {
+        const sessionUser = await getCurrentSession();
 
-    if (requiresAdmin && !isAdmin) {
-      router.replace("/dashboard");
-      setIsReady(true);
-      return;
+        if (!isMounted) {
+          return;
+        }
+
+        if (!sessionUser) {
+          clearClientSession();
+          setUser(null);
+
+          if (requiresAuth) {
+            router.replace("/login");
+          }
+
+          return;
+        }
+
+        if (requiresAdmin && sessionUser.role !== "admin") {
+          storeClientSession(sessionUser);
+          setUser(sessionUser);
+          router.replace("/dashboard");
+          return;
+        }
+
+        storeClientSession(sessionUser);
+        setUser(sessionUser);
+      } catch {
+        if (!isMounted) {
+          return;
+        }
+
+        clearClientSession();
+        setUser(null);
+
+        if (requiresAuth) {
+          router.replace("/login");
+        }
+      } finally {
+        if (isMounted) {
+          setIsReady(true);
+        }
+      }
     }
 
-    setUser(sessionUser);
-    setIsReady(true);
+    setIsReady(false);
+    void loadSession();
+
+    return () => {
+      isMounted = false;
+    };
   }, [pathname, requiresAdmin, requiresAuth, router]);
 
   function saveSession(sessionUser: SessionUser) {
-    window.localStorage.setItem(SESSION_STORAGE_KEY, JSON.stringify(sessionUser));
+    storeClientSession(sessionUser);
     setUser(sessionUser);
+    setIsReady(true);
   }
 
-  function clearSession() {
-    window.localStorage.removeItem(SESSION_STORAGE_KEY);
-    setUser(null);
-    router.push("/login");
+  async function clearSession() {
+    try {
+      await logout();
+    } catch {
+      // Even if the server cookie is already gone, we still want the client to recover.
+    } finally {
+      clearClientSession();
+      setUser(null);
+      setIsReady(true);
+      router.push("/login");
+    }
   }
 
   function hasRole(role: Role) {

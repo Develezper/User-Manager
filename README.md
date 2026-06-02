@@ -9,11 +9,13 @@ Copy `.env.example` to `.env` and fill in your credentials:
 ```env
 MONGODB_URI=mongodb+srv://...
 MONGODB_DB=user-manager-public
+SESSION_SECRET=replace_with_a_long_random_secret
 GMAIL_USER=your_email@gmail.com
 GMAIL_APP_PASSWORD=your_16_character_app_password
 ```
 
 `GMAIL_APP_PASSWORD` must be a Gmail App Password for SMTP, not a Google/Gmail API key.
+`SESSION_SECRET` is used to sign the secure session cookie that protects the API routes.
 
 ## Quick Start
 
@@ -90,5 +92,6 @@ Configure these variables in Vercel:
 
 - `MONGODB_URI`
 - `MONGODB_DB`
+- `SESSION_SECRET`
 - `GMAIL_USER`
 - `GMAIL_APP_PASSWORD`
