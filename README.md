@@ -1,25 +1,59 @@
 # User Manager
 
-Aplicacion construida con Next.js App Router para autenticacion y administracion de usuarios con MongoDB, Hero UI y custom hooks.
+Application built with the Next.js App Router for user authentication and management using MongoDB, Hero UI, and custom hooks.
 
-## Variables de entorno
+## Environment Variables
 
-Copia `.env.example` a `.env` y completa tus credenciales:
+Copy `.env.example` to `.env` and fill in your credentials:
 
 ```env
 MONGODB_URI=mongodb+srv://...
 MONGODB_DB=user-manager-public
-GMAIL_USER=tu_correo@gmail.com
-GMAIL_APP_PASSWORD=tu_app_password_de_16_caracteres
+GMAIL_USER=your_email@gmail.com
+GMAIL_APP_PASSWORD=your_16_character_app_password
 ```
 
-`GMAIL_APP_PASSWORD` debe ser una App Password de Gmail para SMTP, no una API key de Google/Gmail.
+`GMAIL_APP_PASSWORD` must be a Gmail App Password for SMTP, not a Google/Gmail API key.
 
-## Rutas principales
+## Quick Start
 
-- `/login`: acceso de usuarios registrados
-- `/dashboard`: vista protegida para usuarios autenticados
-- `/admin/users`: administracion protegida para cuentas con rol `admin`
+```bash
+bun install
+bun run dev
+```
+
+The app runs at `http://localhost:3000`.
+
+## Main Routes
+
+- `/login`: access for registered users
+- `/dashboard`: protected view for authenticated users
+- `/admin/users`: protected management panel for accounts with the `admin` role
+
+## Admin Panel Access
+
+```bash
+http://localhost:3000/admin/users
+```
+
+To access the admin panel, you must first sign in at:
+
+```bash
+http://localhost:3000/login
+```
+
+Important: the panel only allows access to users with the `admin` role.
+
+### Access Credentials
+
+The project does not publish admin credentials inside the repository.
+
+To sign in, you need an administrator account that already exists in the database, for example:
+
+- Email: `admin@example.com`
+- Password: `your admin password`
+
+After signing in through `/login`, you can open `/admin/users` from the dashboard.
 
 ## Scripts
 
@@ -30,29 +64,29 @@ bun run dev
 
 ## Health Check
 
-Con la app corriendo puedes validar Mongo Atlas en:
+With the app running, you can validate the Mongo Atlas connection at:
 
 ```bash
 curl http://localhost:3000/api/health/db
 ```
 
-En `production` el endpoint no expone el `host` del cluster ni el detalle del error.
+In `production`, the endpoint does not expose the cluster `host` or detailed error information.
 
-## Funcionalidades
+## Features
 
-- Login con validacion contra MongoDB
-- Persistencia de sesion en `localStorage`
-- Dashboard protegido
-- Vista admin protegida por rol
-- CRUD de usuarios con capa de servicios
-- Custom hooks `useAuthSession` y `useUsers`
-- Componentes de HeroUI en login, dashboard, modales, formularios y tarjetas
-- Passwords hasheadas con `bcryptjs`
-- Email de bienvenida con `nodemailer`
+- Login validated against MongoDB
+- Session persistence in `localStorage`
+- Protected dashboard
+- Role-protected admin view
+- User CRUD with a service layer
+- Custom hooks: `useAuthSession` and `useUsers`
+- HeroUI components in the login, dashboard, modals, forms, and cards
+- Password hashing with `bcryptjs`
+- Welcome email delivery with `nodemailer`
 
-## Despliegue
+## Deployment
 
-Configura en Vercel estas variables:
+Configure these variables in Vercel:
 
 - `MONGODB_URI`
 - `MONGODB_DB`
