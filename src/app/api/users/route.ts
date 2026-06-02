@@ -1,13 +1,20 @@
 import bcrypt from "bcryptjs";
 import { NextResponse } from "next/server";
+import { requireAdminSession } from "@/lib/apiAuth";
 import { connectToDatabase } from "@/lib/mongodb";
 import { sendWelcomeEmail } from "@/lib/mailer";
 import { createUserSchema, getValidationMessage } from "@/lib/validators/user";
 import { User } from "@/models/User";
 import { ZodError } from "zod";
 
-export async function GET() {
+export async function GET(request: Request) {
   try {
+    const authError = requireAdminSession(request);
+
+    if (authError) {
+      return authError;
+    }
+
     await connectToDatabase();
     const users = await User.find().sort({ createdAt: -1 });
 
@@ -35,6 +42,12 @@ export async function GET() {
 
 export async function POST(request: Request) {
   try {
+    const authError = requireAdminSession(request);
+
+    if (authError) {
+      return authError;
+    }
+
     const { nombre, cc, email, password, role } = createUserSchema.parse(await request.json());
 
     await connectToDatabase();

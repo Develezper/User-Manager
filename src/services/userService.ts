@@ -1,9 +1,15 @@
+import { getClientSessionHeaders } from "@/lib/session";
 import { User, UserFormPayload } from "@/types/user";
 import { createUserSchema, getValidationMessage, updateUserSchema } from "@/lib/validators/user";
 import { ZodError } from "zod";
 
 export async function getUsers(): Promise<User[]> {
-  const response = await fetch("/api/users", { cache: "no-store" });
+  const response = await fetch("/api/users", {
+    cache: "no-store",
+    headers: {
+      ...getClientSessionHeaders()
+    }
+  });
   const data = await response.json();
 
   if (!response.ok) {
@@ -29,7 +35,8 @@ export async function createUser(payload: UserFormPayload): Promise<User> {
   const response = await fetch("/api/users", {
     method: "POST",
     headers: {
-      "Content-Type": "application/json"
+      "Content-Type": "application/json",
+      ...getClientSessionHeaders()
     },
     body: JSON.stringify(validatedPayload)
   });
@@ -59,7 +66,8 @@ export async function updateUser(id: string, payload: UserFormPayload): Promise<
   const response = await fetch(`/api/users/${id}`, {
     method: "PUT",
     headers: {
-      "Content-Type": "application/json"
+      "Content-Type": "application/json",
+      ...getClientSessionHeaders()
     },
     body: JSON.stringify(validatedPayload)
   });
@@ -75,7 +83,10 @@ export async function updateUser(id: string, payload: UserFormPayload): Promise<
 
 export async function deleteUser(id: string): Promise<void> {
   const response = await fetch(`/api/users/${id}`, {
-    method: "DELETE"
+    method: "DELETE",
+    headers: {
+      ...getClientSessionHeaders()
+    }
   });
 
   const data = await response.json();

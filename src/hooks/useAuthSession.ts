@@ -2,9 +2,8 @@
 
 import { useEffect, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
+import { SESSION_STORAGE_KEY } from "@/lib/session";
 import type { Role, SessionUser } from "@/types/user";
-
-const STORAGE_KEY = "user-manager-session";
 
 type Options = {
   requiresAuth?: boolean;
@@ -19,7 +18,7 @@ export function useAuthSession(options: Options = {}) {
   const [isReady, setIsReady] = useState(false);
 
   useEffect(() => {
-    const raw = window.localStorage.getItem(STORAGE_KEY);
+    const raw = window.localStorage.getItem(SESSION_STORAGE_KEY);
 
     if (!raw) {
       if (requiresAuth) {
@@ -43,12 +42,12 @@ export function useAuthSession(options: Options = {}) {
   }, [pathname, requiresAdmin, requiresAuth, router]);
 
   function saveSession(sessionUser: SessionUser) {
-    window.localStorage.setItem(STORAGE_KEY, JSON.stringify(sessionUser));
+    window.localStorage.setItem(SESSION_STORAGE_KEY, JSON.stringify(sessionUser));
     setUser(sessionUser);
   }
 
   function clearSession() {
-    window.localStorage.removeItem(STORAGE_KEY);
+    window.localStorage.removeItem(SESSION_STORAGE_KEY);
     setUser(null);
     router.push("/login");
   }

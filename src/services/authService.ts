@@ -1,3 +1,4 @@
+import { getClientSessionHeaders } from "@/lib/session";
 import { LoginPayload, RegisterPayload, SessionUser } from "@/types/user";
 import { getValidationMessage, loginSchema, registerSchema } from "@/lib/validators/user";
 import { ZodError } from "zod";
@@ -44,7 +45,8 @@ export async function register(payload: RegisterPayload): Promise<SessionUser> {
   const response = await fetch("/api/auth/register", {
     method: "POST",
     headers: {
-      "Content-Type": "application/json"
+      "Content-Type": "application/json",
+      ...getClientSessionHeaders()
     },
     body: JSON.stringify(payload)
   });

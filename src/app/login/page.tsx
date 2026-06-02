@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { FormEvent, useState } from "react";
 import { Button, Card, Input, Label, TextField } from "@heroui/react";
 import { login } from "@/services/authService";
@@ -86,10 +85,7 @@ export default function LoginPage() {
           </Card.Content>
           <Card.Footer className="justify-center px-6 pb-8 pt-0 sm:px-8">
             <p className="text-center text-sm text-slate-500">
-              ¿No tienes cuenta?{" "}
-              <Link className="font-semibold text-slate-900 underline-offset-4 hover:underline" href="/register">
-                Registrate aqui
-              </Link>
+              Solicita a un administrador la creacion de tu cuenta.
             </p>
           </Card.Footer>
         </Card>

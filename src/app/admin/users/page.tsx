@@ -199,7 +199,7 @@ function AdminUsersContent({
               {!loading && !error && users.length === 0 ? (
                 <Card className="border border-dashed border-slate-200 bg-slate-50 shadow-none">
                   <Card.Content className="px-6 py-10 text-center text-sm text-slate-500">
-                    No hay usuarios registrados.
+                    No hay usuarios registrados. ¡Crea el primero!
                   </Card.Content>
                 </Card>
               ) : null}
@@ -209,6 +209,10 @@ function AdminUsersContent({
                   {users.map((listedUser) => (
                     <UserCard
                       key={listedUser._id}
+                      cc={listedUser.cc}
+                      email={listedUser.email}
+                      nombre={listedUser.nombre}
+                      role={listedUser.role}
                       user={listedUser}
                       onDelete={handleDeleteRequest}
                       onEdit={handleEdit}

@@ -1,5 +1,6 @@
 import bcrypt from "bcryptjs";
 import { NextResponse } from "next/server";
+import { requireAdminSession } from "@/lib/apiAuth";
 import { connectToDatabase } from "@/lib/mongodb";
 import { getValidationMessage, updateUserSchema } from "@/lib/validators/user";
 import { User } from "@/models/User";
@@ -13,6 +14,12 @@ type Params = {
 
 export async function PUT(request: Request, { params }: Params) {
   try {
+    const authError = requireAdminSession(request);
+
+    if (authError) {
+      return authError;
+    }
+
     const { id } = await params;
     const { nombre, cc, email, password, role } = updateUserSchema.parse(await request.json());
 
@@ -77,6 +84,12 @@ export async function PUT(request: Request, { params }: Params) {
 
 export async function DELETE(_: Request, { params }: Params) {
   try {
+    const authError = requireAdminSession(_);
+
+    if (authError) {
+      return authError;
+    }
+
     const { id } = await params;
     await connectToDatabase();
 
