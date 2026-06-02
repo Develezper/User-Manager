@@ -1,19 +1,15 @@
 import { User, UserFormPayload } from "@/types/user";
+import { apiClient, getApiErrorMessage } from "@/lib/apiClient";
 import { createUserSchema, getValidationMessage, updateUserSchema } from "@/lib/validators/user";
 import { ZodError } from "zod";
 
 export async function getUsers(): Promise<User[]> {
-  const response = await fetch("/api/users", {
-    cache: "no-store",
-    credentials: "include"
-  });
-  const data = await response.json();
-
-  if (!response.ok) {
-    throw new Error(data.message || "No fue posible consultar los usuarios.");
+  try {
+    const { data } = await apiClient.get<{ users: User[] }>("/api/users");
+    return data.users;
+  } catch (error) {
+    throw new Error(getApiErrorMessage(error, "No fue posible consultar los usuarios."));
   }
-
-  return data.users;
 }
 
 export async function createUser(payload: UserFormPayload): Promise<User> {
@@ -29,22 +25,12 @@ export async function createUser(payload: UserFormPayload): Promise<User> {
     throw error;
   }
 
-  const response = await fetch("/api/users", {
-    method: "POST",
-    credentials: "include",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify(validatedPayload)
-  });
-
-  const data = await response.json();
-
-  if (!response.ok) {
-    throw new Error(data.message || "No fue posible crear el usuario.");
+  try {
+    const { data } = await apiClient.post<{ user: User }>("/api/users", validatedPayload);
+    return data.user;
+  } catch (error) {
+    throw new Error(getApiErrorMessage(error, "No fue posible crear el usuario."));
   }
-
-  return data.user;
 }
 
 export async function updateUser(id: string, payload: UserFormPayload): Promise<User> {
@@ -60,33 +46,18 @@ export async function updateUser(id: string, payload: UserFormPayload): Promise<
     throw error;
   }
 
-  const response = await fetch(`/api/users/${id}`, {
-    method: "PUT",
-    credentials: "include",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify(validatedPayload)
-  });
-
-  const data = await response.json();
-
-  if (!response.ok) {
-    throw new Error(data.message || "No fue posible actualizar el usuario.");
+  try {
+    const { data } = await apiClient.put<{ user: User }>(`/api/users/${id}`, validatedPayload);
+    return data.user;
+  } catch (error) {
+    throw new Error(getApiErrorMessage(error, "No fue posible actualizar el usuario."));
   }
-
-  return data.user;
 }
 
 export async function deleteUser(id: string): Promise<void> {
-  const response = await fetch(`/api/users/${id}`, {
-    method: "DELETE",
-    credentials: "include"
-  });
-
-  const data = await response.json();
-
-  if (!response.ok) {
-    throw new Error(data.message || "No fue posible eliminar el usuario.");
+  try {
+    await apiClient.delete(`/api/users/${id}`);
+  } catch (error) {
+    throw new Error(getApiErrorMessage(error, "No fue posible eliminar el usuario."));
   }
 }
