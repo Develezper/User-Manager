@@ -24,10 +24,7 @@
 }
 
 html {
-  background:
-    radial-gradient(circle at top left, rgba(148, 163, 184, 0.12), transparent 26%),
-    radial-gradient(circle at top right, rgba(203, 213, 225, 0.18), transparent 22%),
-    linear-gradient(180deg, var(--background-warm) 0%, var(--background) 100%);
+  background: linear-gradient(180deg, #fcfcfd 0%, #f4f6f8 100%);
   min-height: 100%;
 }
 
@@ -58,7 +55,7 @@ textarea {
 .app-shell {
   position: relative;
   min-height: 100vh;
-  padding: 24px;
+  padding: 32px 20px;
 }
 
 .app-shell::before {
@@ -66,13 +63,11 @@ textarea {
   position: fixed;
   inset: 0;
   pointer-events: none;
-  background:
-    radial-gradient(circle at 20% 15%, rgba(255, 255, 255, 0.72), transparent 24%),
-    radial-gradient(circle at 85% 10%, rgba(226, 232, 240, 0.72), transparent 22%);
+  background: radial-gradient(circle at top, rgba(255, 255, 255, 0.55), transparent 32%);
 }
 
 .app-frame {
-  max-width: 1260px;
+  max-width: 1120px;
   margin: 0 auto;
 }
 

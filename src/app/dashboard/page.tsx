@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Avatar, Button, Card, Chip, Header } from "@heroui/react";
+import { Avatar, Button, Card, Chip, Separator } from "@heroui/react";
 import { ProtectedView } from "@/components/ProtectedView";
 
 export default function DashboardPage() {
@@ -9,29 +9,32 @@ export default function DashboardPage() {
     <ProtectedView>
       {({ user, clearSession, hasRole }) => (
         <main className="app-shell">
-          <div className="app-frame space-y-6">
-            <Card className="border border-slate-200/80 bg-white/80 shadow-none backdrop-blur">
-              <Card.Content className="p-3 sm:p-4">
-                <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-                  <div className="flex items-center gap-3">
-                    <Avatar className="bg-slate-900 text-white">
+          <div className="mx-auto flex w-full max-w-6xl flex-col gap-6 lg:gap-8">
+            <Card className="border border-slate-200 bg-white shadow-[0_10px_30px_rgba(15,23,42,0.05)]">
+              <Card.Content className="px-4 py-4 sm:px-6">
+                <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+                  <div className="flex items-center gap-4">
+                    <Avatar className="h-11 w-11 bg-slate-900 text-sm font-semibold text-white">
                       <Avatar.Fallback>{getInitials(user?.nombre ?? "U")}</Avatar.Fallback>
                     </Avatar>
-                    <Header className="flex flex-col">
-                      <span className="text-sm font-semibold text-slate-900">User Manager</span>
-                      <span className="text-sm text-slate-500">Dashboard</span>
-                    </Header>
+
+                    <div className="min-w-0">
+                      <p className="text-sm font-semibold text-slate-900">User Manager</p>
+                      <p className="text-sm text-slate-500">Panel de usuario</p>
+                    </div>
                   </div>
-                  <div className="flex flex-wrap items-center gap-3">
+
+                  <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
                     <Chip
-                      className={user?.role === "admin" ? "bg-blue-100 text-blue-700" : "bg-emerald-100 text-emerald-700"}
+                      className={getRoleChipClass(user?.role)}
                       size="sm"
                       variant="soft"
                     >
-                      {user?.role}
+                      {getRoleLabel(user?.role)}
                     </Chip>
+
                     <Button
-                      className="border border-slate-200 bg-white text-slate-800"
+                      className="h-11 border border-slate-200 bg-white px-4 font-medium text-slate-700 shadow-sm hover:bg-slate-50"
                       variant="outline"
                       onPress={clearSession}
                     >
@@ -42,76 +45,94 @@ export default function DashboardPage() {
               </Card.Content>
             </Card>
 
-            <div className="grid gap-6 lg:grid-cols-[1.1fr_0.9fr]">
-              <Card className="border border-slate-200/80 bg-white/88 shadow-none">
-                <Card.Header className="flex flex-col items-start gap-2 p-6 sm:p-8">
-                  <p className="eyebrow">Resumen</p>
-                  <Card.Title className="text-3xl font-semibold tracking-[-0.03em] text-slate-900 sm:text-4xl">
+            <div className="grid gap-6 xl:grid-cols-[minmax(0,1.5fr)_360px]">
+              <Card className="border border-slate-200 bg-white shadow-[0_14px_34px_rgba(15,23,42,0.06)]">
+                <Card.Header className="flex flex-col items-start gap-2 px-5 pb-0 pt-6 sm:px-8 sm:pt-8">
+                  <Chip className="bg-slate-100 text-slate-700" size="sm" variant="soft">
+                    Sesion activa
+                  </Chip>
+                  <Card.Title className="text-[1.75rem] font-semibold text-slate-900 sm:text-[2rem]">
                     Hola, {user?.nombre}
                   </Card.Title>
-                  <Card.Description className="text-sm leading-6 text-slate-500 sm:text-base">
-                    Tu sesion esta activa. Desde aqui puedes revisar tu perfil y continuar segun tu rol.
+                  <Card.Description className="max-w-2xl text-sm leading-6 text-slate-500">
+                    Este es tu espacio principal. Aqui puedes revisar la informacion de tu cuenta y los accesos disponibles segun tu rol.
                   </Card.Description>
                 </Card.Header>
-                <Card.Content className="grid gap-4 p-6 pt-0 sm:grid-cols-3 sm:p-8 sm:pt-0">
-                  <InfoCard label="Nombre" value={user?.nombre ?? ""} />
-                  <InfoCard label="Email" value={user?.email ?? ""} />
-                  <Card className="border border-slate-200 bg-slate-50 shadow-none">
-                    <Card.Content className="gap-2 p-5">
-                      <p className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-500">
-                        Rol
-                      </p>
-                      <div className="flex items-center gap-3">
-                        <span className={`status-dot ${user?.role}`} />
-                        <p className="text-lg font-semibold capitalize text-slate-900">{user?.role}</p>
-                      </div>
-                    </Card.Content>
-                  </Card>
+
+                <Card.Content className="px-5 pb-5 pt-6 sm:px-8 sm:pb-8">
+                  <div className="grid gap-4 md:grid-cols-2">
+                    <InfoCard label="Nombre" value={user?.nombre ?? "-"} />
+                    <InfoCard label="Correo" value={user?.email ?? "-"} />
+                    <InfoCard label="Rol" value={getRoleLabel(user?.role)} />
+                    <InfoCard label="Id de usuario" value={user?._id ?? "-"} />
+                  </div>
+
+                  <Separator className="my-6 bg-slate-200" />
+
+                  <div className="grid gap-3 sm:grid-cols-3">
+                    <StatusCard
+                      label="Estado"
+                      value="Activo"
+                      helper="Tu sesion esta disponible en este navegador."
+                    />
+                    <StatusCard
+                      label="Acceso"
+                      value={hasRole("admin") ? "Administrador" : "Usuario"}
+                      helper={hasRole("admin") ? "Puedes gestionar usuarios del sistema." : "Tu perfil tiene acceso al panel general."}
+                    />
+                    <StatusCard
+                      label="Navegacion"
+                      value="Dashboard"
+                      helper="Este panel muestra solo informacion esencial."
+                    />
+                  </div>
                 </Card.Content>
               </Card>
 
-              <div className="grid gap-6">
-                <Card className="border border-slate-200/80 bg-white/88 shadow-none">
-                  <Card.Header className="flex items-center justify-between gap-3 p-6 sm:p-8">
-                    <div>
-                      <p className="eyebrow">Navegacion</p>
-                      <Card.Title className="mt-2 text-2xl font-semibold tracking-[-0.03em] text-slate-900">
-                        Accesos
-                      </Card.Title>
+              <Card className="border border-slate-200 bg-white shadow-[0_14px_34px_rgba(15,23,42,0.06)]">
+                <Card.Header className="flex flex-col items-start gap-2 px-5 pb-0 pt-6 sm:px-6 sm:pt-7">
+                  <Card.Title className="text-xl font-semibold text-slate-900">
+                    Accesos disponibles
+                  </Card.Title>
+                  <Card.Description className="text-sm leading-6 text-slate-500">
+                    Acciones habilitadas para tu cuenta en este momento.
+                  </Card.Description>
+                </Card.Header>
+
+                <Card.Content className="grid gap-5 px-5 pb-5 pt-6 sm:px-6 sm:pb-6">
+                  <div className="rounded-2xl border border-slate-200 bg-slate-50 px-4 py-4">
+                    <div className="flex items-start justify-between gap-3">
+                      <div>
+                        <p className="text-sm font-medium text-slate-900">Cuenta</p>
+                        <p className="mt-1 text-sm leading-6 text-slate-500">
+                          {hasRole("admin")
+                            ? "Tienes permisos para administrar usuarios."
+                            : "Tu cuenta esta activa."}
+                        </p>
+                      </div>
+                      <Chip
+                        className={hasRole("admin") ? "bg-blue-100 text-blue-700" : "bg-emerald-100 text-emerald-700"}
+                        size="sm"
+                        variant="soft"
+                      >
+                        {hasRole("admin") ? "Admin" : "User"}
+                      </Chip>
                     </div>
-                    <Chip className="bg-slate-100 text-slate-700" size="sm" variant="soft">
-                      {hasRole("admin") ? "Admin" : "User"}
-                    </Chip>
-                  </Card.Header>
-                  <Card.Content className="grid gap-3 p-6 pt-0 sm:p-8 sm:pt-0">
-                    <Link href="/login">
-                      <Button className="w-full justify-start bg-slate-900 text-white">
-                        Volver al login
+                  </div>
+
+                  {hasRole("admin") ? (
+                    <Link href="/admin/users" className="block">
+                      <Button className="h-11 w-full bg-slate-900 font-medium text-white shadow-sm">
+                        Ir a /admin/users
                       </Button>
                     </Link>
-                    {hasRole("admin") ? (
-                      <Link href="/admin/users">
-                        <Button className="w-full justify-start bg-blue-600 text-white">
-                          Administrar usuarios
-                        </Button>
-                      </Link>
-                    ) : (
-                      <div className="message-muted">
-                        Solo los administradores pueden acceder a <span className="font-semibold">/admin/users</span>.
-                      </div>
-                    )}
-                  </Card.Content>
-                </Card>
-
-                <Card className="border border-slate-200/80 bg-slate-900 text-white shadow-none">
-                  <Card.Content className="gap-2 p-6 sm:p-8">
-                    <p className="eyebrow text-slate-400">Estado de sesion</p>
-                    <p className="text-lg font-medium text-white">
-                      Acceso activo con persistencia local y control por rol.
-                    </p>
-                  </Card.Content>
-                </Card>
-              </div>
+                  ) : (
+                    <div className="rounded-2xl border border-slate-200 bg-white px-4 py-4 text-sm text-slate-600">
+                      Tu cuenta esta activa.
+                    </div>
+                  )}
+                </Card.Content>
+              </Card>
             </div>
           </div>
         </main>
@@ -123,11 +144,29 @@ export default function DashboardPage() {
 function InfoCard({ label, value }: { label: string; value: string }) {
   return (
     <Card className="border border-slate-200 bg-slate-50 shadow-none">
-      <Card.Content className="gap-2 p-5">
-        <p className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-500">{label}</p>
-        <p className="text-lg font-semibold text-slate-900">{value}</p>
+      <Card.Content className="gap-1 px-4 py-4 sm:px-5 sm:py-5">
+        <p className="text-sm font-medium text-slate-500">{label}</p>
+        <p className="break-all text-base font-semibold text-slate-900">{value}</p>
       </Card.Content>
     </Card>
+  );
+}
+
+function StatusCard({
+  label,
+  value,
+  helper
+}: {
+  label: string;
+  value: string;
+  helper: string;
+}) {
+  return (
+    <div className="rounded-2xl border border-slate-200 bg-white px-4 py-4 shadow-sm">
+      <p className="text-sm font-medium text-slate-500">{label}</p>
+      <p className="mt-2 text-base font-semibold text-slate-900">{value}</p>
+      <p className="mt-1 text-sm leading-6 text-slate-500">{helper}</p>
+    </div>
   );
 }
 
@@ -138,4 +177,12 @@ function getInitials(value: string) {
     .slice(0, 2)
     .map((part) => part[0]?.toUpperCase() ?? "")
     .join("");
+}
+
+function getRoleChipClass(role?: string) {
+  return role === "admin" ? "bg-blue-100 text-blue-700" : "bg-emerald-100 text-emerald-700";
+}
+
+function getRoleLabel(role?: string) {
+  return role === "admin" ? "Administrador" : "Usuario";
 }
