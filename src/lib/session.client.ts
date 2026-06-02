@@ -3,9 +3,8 @@
  * Este archivo NO importa nada de Node.js para que sea seguro en el bundle del cliente.
  */
 
+import { SESSION_STORAGE_KEY } from "@/lib/sessionConstants";
 import type { SessionUser } from "@/types/user";
-
-export const SESSION_STORAGE_KEY = "user-manager-session";
 
 export function getClientStoredSession(): SessionUser | null {
   if (typeof window === "undefined") {
